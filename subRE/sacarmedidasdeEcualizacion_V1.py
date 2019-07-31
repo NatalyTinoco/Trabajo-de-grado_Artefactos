@@ -21,26 +21,31 @@ import numpy as np
 import statistics as stats
 from scipy.spatial import distance
 import statistics
+import xlrd
 
 from equalization import globalequalization, adaptativeequalization, contraststretching
 from brilloContraste import contraste
 
+workbook = xlrd.open_workbook("ListasubRE.xlsx")
+
+sheet = workbook.sheet_by_index(0)
+
 brillom=np.zeros((166,4))
-contrastem=[[],[],[],[]]
+contrastem=np.zeros((166,4))
 i=0
 tiposNorm = ['',globalequalization,adaptativeequalization,contraststretching]
 
-for file in glob.glob("*.jpg"):
+for col in range(sheet.ncols):
 
-    imgfile=file
-    filetxt=file[0:len(file)-3]+'txt'      
+    imgfile=sheet.cell_value(0, col)
+    filetxt=imgfile+'jpg'      
     #bboxfile=filetxt
     #Ecualizaciones
     #img=globalequalization(img)
     #img=adaptativeequalization(img)
     #img=contraststretching(img)
     for norm in range(len(tiposNorm)):
-        img = read_img(imgfile)
+        img = read_img(filetxt)
         #img=filtrominimo(img)
         img2 = img.copy()    
         if norm == 0:
@@ -50,10 +55,10 @@ for file in glob.glob("*.jpg"):
         else:
             ima = tiposNorm[norm](img)
             ima2 = tiposNorm[norm](img2)
-        #print(i,norm)   
+        print(i,norm)   
         ima=cv2.cvtColor(ima, cv2.COLOR_RGB2GRAY) 
         ima2=cv2.cvtColor(ima2, cv2.COLOR_RGB2GRAY) 
-        contrastem[norm].append(contraste(ima))
+        contrastem[i,norm] = contraste(ima)
         #brillom[i,norm]=brillo(ima2)
         #print(imgfile)
         
