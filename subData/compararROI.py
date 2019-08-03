@@ -8,58 +8,57 @@ from skimage.measure import compare_ssim as ssim
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-
+from scipy.spatial import distance
 
 def mse(imageA, imageB):
-	# the 'Mean Squared Error' between the two images is the
-	# sum of the squared difference between the two images;
-	# NOTE: the two images must have the same dimension
 	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
 	err /= float(imageA.shape[0] * imageA.shape[1])
-	
-	# return the MSE, the lower the error, the more "similar"
-	# the two images are
 	return err
- 
-def compare_images(imageA, imageB):
-	# compute the mean squared error and structural similarity
-	# index for the images
-	m = mse(imageA, imageB)
-	s = ssim(imageA, imageB)
-   	# setup the figure
-	fig = plt.figure(title)
 
-	plt.suptitle("MSE: %.2f, SSIM: %.2f" % (m, s))
- 
-	# show first image
-	ax = fig.add_subplot(1, 2, 1)
-	plt.imshow(imageA, cmap = plt.cm.gray)
-	plt.axis("off")
- 
-	# show the second image
-	ax = fig.add_subplot(1, 2, 2)
-	plt.imshow(imageB, cmap = plt.cm.gray)
-	plt.axis("off")
- 
-	# show the images
-	plt.show()
-   #"""
+def dice(im1, im2):
+    im1 = np.asarray(im1).astype(np.bool)
+    im2 = np.asarray(im2).astype(np.bool)
 
-    
+    if im1.shape != im2.shape:
+        raise ValueError("Shape mismatch: im1 and im2 must have the same shape.")
+
+    # Compute Dice coefficient
+    intersection = np.logical_and(im1, im2)
+    Dice=2. * intersection.sum() / (im1.sum() + im2.sum())
+    return Dice    
 import glob
 
 #similitud=np.zeros((307,16))
-similitud=np.zeros((307,3))
+#mSSIM=np.zeros((307,16))
+#mMSE=np.zeros((307,16))
+#mDICE1=np.zeros((307,16))
+#mDICE2=np.zeros((307,16))
+mSSIM=np.zeros((307,8))
+mMSE=np.zeros((307,8))
+mDICE1=np.zeros((307,8))
+mDICE2=np.zeros((307,8))
 i=0
+original = cv2.imread("./segROI/ROI_Manuales_V2/00016.jpg",0)
+img=cv2.imread("./segROI/00016.jpg",0)
+amSSIM=ssim(original, img)
+amMSE=mse(original, img)
+a=original
+b=img
+a=a.reshape(-1)
+b=b.reshape(-1)
+amDICE1= distance.dice(a, b)
+amDICE2= dice(original, img)
+print('SSIM=',' ',amSSIM)
+print('MSE=',' ',amMSE)
+print('DICE=',' ',amDICE2)
+
+
+        
 for imgfile in glob.glob("*.jpg"):
     #dire='./segROI/#6/Z/'+imgfile
-    print(imgfile)  
-    #imgfile="WL_00442.jpg"
-    original = cv2.imread("./segROI/ROI_Manuales/"+imgfile,0)
-    #original=original[:,:,0]
-    #plt.imshow(original)
-    #plt.show()
+    print(imgfile) 
     """
+    original = cv2.imread("./segROI/ROI_Manuales_V2/"+imgfile,0)
     unoB = cv2.imread("./segROI/#1/B/"+imgfile,0)
     unoV = cv2.imread("./segROI/#1/V/"+imgfile,0)
     unoZ = cv2.imread("./segROI/#1/Z/"+imgfile,0)
@@ -73,50 +72,42 @@ for imgfile in glob.glob("*.jpg"):
     cuatroV=cv2.imread("./segROI/#4/V/"+imgfile,0)
     cuatroZ=cv2.imread("./segROI/#4/Z/"+imgfile,0)
     cincoB=cv2.imread("./segROI/#5/B/"+imgfile,0)
-    """
     cincoV=cv2.imread("./segROI/#5/V/"+imgfile,0)
     cincoZ=cv2.imread("./segROI/#5/Z/"+imgfile,0)
-    #plt.imshow(original,'Greys')
-    #plt.show() 
-                        
-    s0=ssim(original, original)#, "Original vs. Original"
     """
-    s1=ssim(original, unoB)#, "Original vs. unoB"
-    s2=ssim(original, unoV)#, "Original vs. unoV"
-    s3=ssim(original, unoZ)#, "Original vs. unoZ"
-    s4=ssim(original, dosB)#, "Original vs. dosB"
-    s5=ssim(original, dosV)#, "Original vs. dosV"
-    s6=ssim(original, dosZ)#, "Original vs. dosZ"
-    s7=ssim(original, tresB)#, "Original vs. tresB"
-    s8=ssim(original, tresV)#, "Original vs. tresV"
-    s9=ssim(original, tresV)#, "Original vs. tresZ"
-    s10=ssim(original, cuatroB)#, "Original vs. cuatroB"
-    s11=ssim(original, cuatroV)#, "Original vs. cuatroV"
-    s12=ssim(original, cuatroZ)#, "Original vs. cuatroZ"
-    s13=ssim(original, cincoB, )#"Original vs. cincoB"
-    """
-    s14=ssim(original, cincoV)#, "Original vs. cincoV"
-    s15=ssim(original, cincoZ)#, "Original vs. cincoZ"
+    original = cv2.imread("./segROI/ROI_Manuales_V2/"+imgfile,0)
+    unoB = cv2.imread("./segROI/#5/B/"+imgfile,0)
+    unoV = cv2.imread("./segROI/#5/G/"+imgfile,0)
+    unoZ = cv2.imread("./segROI/#5/V/"+imgfile,0)
+    dosB = cv2.imread("./segROI/#5/Z/"+imgfile,0)
+    #plt.imshow(dosB)
+    #plt.show()
+    dosV = cv2.imread("./segROI/#5/Z1/"+imgfile,0)
+    dosZ = cv2.imread("./segROI/#5/Z2/"+imgfile,0)                     
+    tresB = cv2.imread("./segROI/#5/Z3/"+imgfile,0)
+    #tresV = cv2.imread("./segROI/#3/V/"+imgfile,0)
+    #tresZ = cv2.imread("./segROI/#3/Z/"+imgfile,0)
+    #cuatroB=cv2.imread("./segROI/#4/B/"+imgfile,0)
+    #cuatroV=cv2.imread("./segROI/#5/B/"+imgfile,0)
+    #cuatroZ=cv2.imread("./segROI/#5/G/"+imgfile,0)
+    #cincoB=cv2.imread("./segROI/#5/B/"+imgfile,0)
+    #cincoV=cv2.imread("./segROI/#5/V/"+imgfile,0)
+    #cincoZ=cv2.imread("./segROI/#5/Z/"+imgfile,0)
     
-    similitud[i,0]=s0
-    """
-    similitud[i,1]=s1
-    similitud[i,2]=s2
-    similitud[i,3]=s3
-    similitud[i,4]=s4
-    similitud[i,5]=s5
-    similitud[i,6]=s6
-    similitud[i,7]=s7
-    similitud[i,8]=s8
-    similitud[i,9]=s9
-    similitud[i,10]=s10
-    similitud[i,11]=s11
-    similitud[i,12]=s12
-    similitud[i,13]=s13
-    """
-    similitud[i,1]=s14
-    similitud[i,2]=s15
-      
+    #tabla=[original,unoB,unoV,unoZ,dosB,dosV,dosZ,tresB,tresV,tresZ,cuatroB,cuatroV,cuatroZ,cincoB,cincoV,cincoZ ]
+    tabla=[original,unoB,unoV,unoZ,dosB,dosV,dosZ,tresB]
+   
+    for h in range(len(tabla)):
+        print(tabla[h].shape)
+        mSSIM[i,h]=ssim(original, tabla[h])
+        mMSE[i,h]=mse(original, tabla[h])
+        a=original
+        b=tabla[h]
+        a=a.reshape(-1)
+        b=b.reshape(-1)
+        mDICE1[i,h]= distance.dice(a, b)
+        mDICE2[i,h]= dice(original, tabla[h])
+              
     i=i+1
     
 import openpyxl
@@ -125,19 +116,26 @@ doc = openpyxl.load_workbook('ROI.xlsx')
 doc.get_sheet_names()
 hoja = doc.get_sheet_by_name('Hoja1')
 #table = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P']
-table = ['A','B','C']
+#table = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH']
+table = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI']
+
+#table = ['A','B','C']
 
 i=0
 ii=0
-for a in range (int(len(table))):
+for a in range (int(len(table)/4)):
     #print(i)
     #print(a)
-    for x in range ((len(similitud[:,1]))):
-        hoja[table[i]+ str (x+4)]=similitud[x,a]
+    for x in range ((len(mSSIM[:,1]))):
+        hoja[table[i]+ str (x+4)]=mSSIM[x,a]
+        hoja[table[i+1]+ str (x+4)]=mMSE[x,a]
+        hoja[table[i+2]+ str (x+4)]=mDICE1[x,a]
+        hoja[table[i+3]+ str (x+4)]=mDICE2[x,a]
+        
     #print(table[i])
     #print(table[i+1])
     #print(table[i+2])
     print(x,a)
-    i=(a+1)
+    i=(a+1)*4
     #print(a)
 doc.save("ROI.xlsx")
