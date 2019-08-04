@@ -10,7 +10,7 @@ import pylab as plt
 from matplotlib import pyplot as plt
 import numpy as np 
 from pylab import *
-from readimg import read_img #leer imagines ### img=read_img(imgfile)##
+#from readimg import read_img #leer imagines ### img=read_img(imgfile)##
 from skimage.morphology import disk
 
 from skimage.filters import threshold_otsu
@@ -30,7 +30,7 @@ def log(img):
 
 
 for imgfile in glob.glob("*.jpg"):
-    ima=read_img(imgfile)
+    ima=cv2.imread(imgfile)
     #ima='00028_batch2.jpg'
     
     """ # Primera forma #"""
@@ -139,7 +139,7 @@ for imgfile in glob.glob("*.jpg"):
     #plt.show()
 
     dire='./segROI/#5/Z1/'+imgfile
-    cv2.imwrite(dire,close)
+    #cv2.imwrite(dire,close)
     k = cv2.waitKey(1000)
     #destroy the window
     cv2.destroyAllWindows()

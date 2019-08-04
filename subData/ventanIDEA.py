@@ -71,10 +71,15 @@ for imgfile in glob.glob("*.jpg"):
           plt.ylabel('Img')
           plt.show()
           """
+          #hist = cv2.calcHist([window],[0],None,[256],[int(np.min(window)),int(np.max(window))])
+          #plt.plot(hist)
+          #plt.show()
+          
           ta=window.shape
           ta=list(ta)
           binary=window.copy()
-          umbral=0.95*np.max(window)
+          umbral=220
+          #umbral=0.95*np.max(window)
           #print(np.max(ven))
           for f in range(ta[0]):
                for c in range (ta[1]):
@@ -88,7 +93,7 @@ for imgfile in glob.glob("*.jpg"):
           #cv2.destroyAllWindows()
           #print(Binary[x:x + w_width, y:y + w_height].shape)
           Binary[x:x + w_width, y:y + w_height]=binary
-     
+    """ 
     fff,ccc=image.shape
     for ff in range(fff):
      for cc in range (ccc):
@@ -97,7 +102,7 @@ for imgfile in glob.glob("*.jpg"):
              Binary[ff,cc]=0
          else:
              Binary[ff,cc]=255
-   
+    """
     cv2.imshow('image',Binary)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
