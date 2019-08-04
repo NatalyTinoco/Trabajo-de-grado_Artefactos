@@ -98,7 +98,7 @@ for imgfile in glob.glob("*.jpg"):
             else:
                 binary[f,c]=1
 
-    #binary = (binary*255).astype(np.uint8)
+    binary = (binary*255).astype(np.uint8)
     #plt.imshow(binary, cmap=plt.cm.gray)
     #plt.show()
     #""" 
@@ -111,12 +111,12 @@ for imgfile in glob.glob("*.jpg"):
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (37, 37))
     close=cv2.morphologyEx(openi, cv2.MORPH_CLOSE, kernel)
 
-    _,contours,_ = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    contours,hierachy = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     areas = [cv2.contourArea(c) for c in contours]
     max_index = np.argmax(areas)
     cnt=contours[max_index]
     x,y,w,h = cv2.boundingRect(cnt)
-    #cv2.rectangle(ima,(x,y),(x+w,y+h),(0,255,0),2)
+    cv2.rectangle(ima,(x,y),(x+w,y+h),(0,255,0),2)
     cv2.imshow("Show",close)
     #plt.imshow(im)
     #plt.show()
