@@ -11,6 +11,7 @@ from matplotlib import pyplot as plt
 import numpy as np 
 from pylab import *
 #from readimg import read_img #leer imagines ### img=read_img(imgfile)##
+from readimg import read_img #leer imagines ### img=read_img(imgfile)##
 from skimage.morphology import disk
 
 from skimage.filters import threshold_otsu
@@ -112,17 +113,13 @@ for imgfile in glob.glob("*.jpg"):
     close=cv2.morphologyEx(openi, cv2.MORPH_CLOSE, kernel)
 
     _,contours,_ = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    #contours,hierachy = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     areas = [cv2.contourArea(c) for c in contours]
     max_index = np.argmax(areas)
     cnt=contours[max_index]
     x,y,w,h = cv2.boundingRect(cnt)
-    #cv2.rectangle(ima,(x,y),(x+w,y+h),(0,255,0),2)
-    cv2.imshow("Show",close)
     #plt.imshow(im)
     #plt.show()
-    
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
     #"""
     #print((y,x),(y+h,x+w))
     tru=15
@@ -142,6 +139,7 @@ for imgfile in glob.glob("*.jpg"):
     dire='./segROI/#5/Z3/'+imgfile
     #img=cv2.cvtColor(im,cv2.COLOR_BGR2RGB)   
     #cv2.imwrite(dire,close)
+    cv2.imwrite(dire,close)
     k = cv2.waitKey(1000)
     #destroy the window
     cv2.destroyAllWindows()

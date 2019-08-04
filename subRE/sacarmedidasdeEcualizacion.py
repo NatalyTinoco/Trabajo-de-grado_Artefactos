@@ -9,7 +9,7 @@ from readimg import read_img #leer imagines ### img=read_img(imgfile)##
 from comparacionhistReflejosE import comparacionhistRE
 
 from equalization import globalequalization, adaptativeequalization, contraststretching
-
+from contraste_V0 import contraste
 
 import cv2
 import xlrd
@@ -27,8 +27,9 @@ i=0
 correlacionT = [[],[],[]]
 BhattacharyyaT = [[],[],[]]
 euclidianaT = [[],[],[]]
+contrast = [[],[],[]]
 i=5
-tiposNorm = [globalequalization,adaptativeequalization,contraststretching]
+tiposNorm = ['',globalequalization,adaptativeequalization,contraststretching]
 
 for col in range(sheet.ncols):
     imgfile = sheet.cell_value(0, col)  
@@ -45,14 +46,21 @@ for col in range(sheet.ncols):
     img = read_img(imgfile)
     img2 = img.copy()    
     for norm in range(len(tiposNorm)):
-        ima = tiposNorm[norm](img)
-        ima2 = tiposNorm[norm](img2)
-    
+        if norm == 0: 
+            ima = img
+            ima2 = img2
+        else:
+            ima = tiposNorm[norm](img)
+            ima2 = tiposNorm[norm](img2)
+        
+        ima=cv2.cvtColor(ima, cv2.COLOR_RGB2GRAY)
+        contr = contraste(ima)
         img1,img2,hista,histb,correlacion,Bhattacharyya, euclidiana=comparacionhistRE(ima,ima2,segmenta)
        
         correlacionT[norm].append(correlacion)
         BhattacharyyaT[norm].append(Bhattacharyya)
         euclidianaT[norm].append(euclidiana)
+        contrast[norm].append(contr)
         print(norm)
     """
     imgg=cv2.cvtColor(imgg,cv2.COLOR_RGB2BGR)
