@@ -15,17 +15,23 @@ from scipy import stats
 
 brillomoda = []
 brillomedia = []
+luminanciaMedia = []
 
 for image in glob.glob('*.jpg'):
-    #image = '00002.jpg'
+    #image = '0144-0000603.jpg'
     im = cv2.imread(image)
     R,G,B=cv2.split(im)
     w,h,ch=im.shape
     brillo=np.sqrt(0.241*R**2+0.691*G**2+0.068*B**2)/(w*h)
     brillomedia.append(np.mean(brillo))
     brillomoda.append(stats.mode(brillo))
+    
+    luminance = (0.2126*im[0]+0.7152*im[1]+0.0722*im[2])
+    modeL = stats.mode(luminance)
+    luminanciaMedia.append(np.mean(luminance))
 
-datos = {'Media':brillomedia}
+datos = {'Media':brillomedia,
+         'Luminacia': luminanciaMedia}
 
 datos = pd.DataFrame(datos)
 datos.to_excel('Características_brilloDM.xlsx')
