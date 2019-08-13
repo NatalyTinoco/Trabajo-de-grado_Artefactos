@@ -16,8 +16,8 @@ def euclidiana(img1,img2,a):
     euclidianNor = []
     if a==0:
         for d in range(3):
-            histNor = cv2.calcHist([img1], [d], None, [256], [0, 256])
-            hist2Nor = cv2.calcHist([img2], [d], None, [256], [0, 256])
+            histNor = cv2.calcHist([img1], [d], None, [256], [1, 256])
+            hist2Nor = cv2.calcHist([img2], [d], None, [256], [1, 256])
             histgramaNor.append(histNor)
             histograma2Nor.append(hist2Nor)
         
@@ -26,8 +26,8 @@ def euclidiana(img1,img2,a):
             euclidianNor.append(euclNor)
         totaleucNor = statistics.mean(euclidianNor)
     else:
-          histNor = cv2.calcHist([img1], [0], None, [256], [0, 256])
-          hist2Nor = cv2.calcHist([img2], [0], None, [256], [0, 256])
+          histNor = cv2.calcHist([img1], [0], None, [256], [1, 256])
+          hist2Nor = cv2.calcHist([img2], [0], None, [256], [1, 256])
           totaleucNor = distance.euclidean(histNor, hist2Nor)
    
     return totaleucNor

@@ -86,7 +86,7 @@ for file in glob.glob("*.jpg"):
                 
 
                 #hista = cv2.calcHist([img1], [0, 1, 2], None, [8, 8, 8],[mini,maxi,mini,maxi,mini,maxi])
-                hista = cv2.calcHist([img1], [0, 1, 2], None, [8, 8, 8],[0, 256, 0, 256, 0, 256])
+                hista = cv2.calcHist([img1], [0, 1, 2], None, [8, 8, 8],[1, 256, 1, 256, 1, 256])
     
                 #plt.imshow(img1)
                 #plt.show()
@@ -96,7 +96,7 @@ for file in glob.glob("*.jpg"):
                     img2[:,:,z]=(img2[:,:,z]*(mascara2))  
 
                 #histb = cv2.calcHist([img2], [0, 1, 2], None, [8, 8, 8],[int(pmin), int(pmax), int(pmin), int(pmax), int(pmin), int(pmax)])                    
-                histb = cv2.calcHist([img2], [0, 1, 2], None, [8, 8, 8],[0, 256, 0, 256, 0, 256])
+                histb = cv2.calcHist([img2], [0, 1, 2], None, [8, 8, 8],[1, 256, 1, 256, 1, 256])
     
                 #plt.imshow(img2)
                 #plt.show()
@@ -123,7 +123,7 @@ for file in glob.glob("*.jpg"):
 #%%
 import openpyxl
 
-doc = openpyxl.load_workbook('metricasDistanciaEcu.xlsx')
+doc = openpyxl.load_workbook('metricasDistanciaEcuestesi.xlsx')
 doc.get_sheet_names()
 hoja = doc.get_sheet_by_name('Hoja1')
 table = ['B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U']

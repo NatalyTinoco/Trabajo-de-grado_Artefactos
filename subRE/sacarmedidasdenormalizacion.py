@@ -58,6 +58,10 @@ for col in range(sheet.ncols):
         rangomin[norm].append(ima3.min())
         rangomax[norm].append(ima3.max())
         img1,img2,hista,histb,correlacion,Bhattacharyya, euclidiana=comparacionhistRE(ima,ima2,segmenta)
+#        plt.imshow(img1)
+#        plt.show
+#        plt.imshow(img2)
+#        plt.show
         correlacionT[norm].append(correlacion)
         BhattacharyyaT[norm].append(Bhattacharyya)
         euclidianaT[norm].append(euclidiana)
@@ -73,7 +77,7 @@ for col in range(sheet.ncols):
 
 import xlsxwriter
 
-workbook = xlsxwriter.Workbook('metricasDistanciaRE.xlsx')
+workbook = xlsxwriter.Workbook('metricasDistanciaREestesi.xlsx')
 worksheet = workbook.add_worksheet('original')
 
 bold = workbook.add_format({'bold': 1})

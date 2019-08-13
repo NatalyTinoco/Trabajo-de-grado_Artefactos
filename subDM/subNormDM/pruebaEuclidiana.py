@@ -16,8 +16,8 @@ def euclidiana(img1,img2):
     euclidianNor = []
     
     for d in range(3):
-        histNor = cv2.calcHist([img1], [d], None, [256], [0, 256])
-        hist2Nor = cv2.calcHist([img2], [d], None, [256], [0, 256])
+        histNor = cv2.calcHist([img1], [d], None, [256], [1, 256])
+        hist2Nor = cv2.calcHist([img2], [d], None, [256], [1, 256])
         histgramaNor.append(histNor)
         histograma2Nor.append(hist2Nor)
     

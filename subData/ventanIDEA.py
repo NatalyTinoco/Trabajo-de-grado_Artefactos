@@ -13,211 +13,195 @@ from normalizacion import log
 from filMin import filtrominimo
 import pylab as plt 
 from matplotlib import pyplot as plt
+from readboxes import read_boxes #leer bbox ## boxes=read_boxes(txtfile) ##
+from yolovoc import yolo2voc #conversion format ## box_list=yolo2voc(boxes, imshape) ##
 
-def eleccionventana(f):
-        i=1
-        a=1
-        divisor=0
-        while a!=0:
-           if f%i==0 and i>50:
-               a=0
-               divisor=i
-               #print(i)
-           else:
-               i=i+1
-        return divisor
+from skimage import exposure
+from scipy.signal import find_peaks
+
+
+def adaptativeequalization(img):  
+    imR, imG, imB=cv2.split(img) 
+    #Adaptative Equalization
+    clahe=cv2.createCLAHE(2,(8,8))
+    imhaR=clahe.apply(imR)
+    imhaG=clahe.apply(imG)
+    imhaB=clahe.apply(imB)
+
+    imha=cv2.merge((imhaR,imhaG,imhaB))
     
+    return imha
+
+def contraststretching(img):
+    #contrast Stretching
+    p2, p98 = np.percentile(img, (2, 98))
+    img_rescale = exposure.rescale_intensity(img, in_range=(p2, p98))
+    return img_rescale
+
+def find_nearest(array,value): 
+    idx = (np.abs(array-value)).argmin()
+    return array[idx]
+
 for imgfile in glob.glob("*.jpg"):
+        
+    img=cv2.imread(imgfile)   
+    img = cv2.normalize(img, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+    img=adaptativeequalization(img)
+    
     ima='./segROI/#5/Z3/'+imgfile
     imaROI=cv2.imread(ima,0)
     imaROI = cv2.normalize(imaROI, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
-    img=cv2.imread(imgfile)
-    #img=log(img)
-    #img=filtrominimo(img)
-    f,c,ch=img.shape
-    YUV=cv2.cvtColor(img,cv2.COLOR_BGR2YUV)
-    Y,U,V=cv2.split(YUV)   
-    V=Y*imaROI 
-    #tavenf=eleccionventana(f)
-    #tavenc=eleccionventana(c)
-    tavenf=15
-    tavenc=15
-    #print(tavenf,tavenc)
-    #ven=np.zeros((tavenf,tavenc))
-    #Ff=0
-    #Cc=0
-    #ha=tavenf
-    #has=tavenc
+      
+    _,contours,_= cv2.findContours(imaROI,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    areas = [cv2.contourArea(c) for c in contours]
+    max_index = np.argmax(areas)
+    cnt=contours[max_index]
+    x3,y3,w3,h3 = cv2.boundingRect(cnt)
+    
+    
+    #img=tloga(img)
+    R,G,B=cv2.split(img)
+    
+    #f,c,ch=img.shape
+    #YUV=cv2.cvtColor(img,cv2.COLOR_BGR2YUV)
+    #Y,U,V=cv2.split(YUV)   
+    G=G*imaROI 
+    
+    
+    V=G[y3:y3+h3,x3:x3+w3]
     
     Binary=V.copy()
     
-    image=V
+    a,b = V.shape
+    tamañoA = 150
+    tamañoB = 150
+    vecesA = int(a/tamañoA)
+    vecesB = int(b/tamañoB)
     
-    tmp = image # for drawing a rectangle
-    stepSize = tavenf
-    (w_width, w_height) = (tavenf, tavenc) # window size
-    for x in range(0, image.shape[1] - w_width , stepSize):
-       for y in range(0, image.shape[0] - w_height, stepSize):
-          window = image[x:x + w_width, y:y + w_height]
-          #cv2.imshow('W',window)
-          #cv2.waitKey(0)
-          #cv2.destroyAllWindows()
-          #print(x,y)  
-          """
-          ima=window .reshape(-1)
-          plt.ion()
-          plt.boxplot([ima], sym = 'ko', whis = 1.5)  # El valor por defecto para los bigotes es 1.5*IQR pero lo escribimos explícitamente
-          plt.xticks([1], ['img'], size = 'large', color = 'k')  # Colocamos las etiquetas para cada distribución
-          plt.ylabel('Img')
-          plt.show()
-          """
-          #hist = cv2.calcHist([window],[0],None,[256],[int(np.min(window)),int(np.max(window))])
-          #plt.plot(hist)
-          #plt.show()
-          
-          ta=window.shape
-          ta=list(ta)
-          binary=window.copy()
-          umbral=220
-          #umbral=0.95*np.max(window)
-          #print(np.max(ven))
-          for f in range(ta[0]):
-               for c in range (ta[1]):
-                   if window[f,c]<umbral:
-                    #if S[f,c]<H[f,c]:
-                       binary[f,c]=0
-                   else:
-                       binary[f,c]=255
-          #cv2.imshow('image',binary)
-          #cv2.waitKey(0)
-          #cv2.destroyAllWindows()
-          #print(Binary[x:x + w_width, y:y + w_height].shape)
-          Binary[x:x + w_width, y:y + w_height]=binary
-    """ 
-    fff,ccc=image.shape
-    for ff in range(fff):
-     for cc in range (ccc):
-         if image[ff,cc]<umbral:
-          #if S[f,c]<H[f,c]:
-             Binary[ff,cc]=0
-         else:
-             Binary[ff,cc]=255
-    """
-    cv2.imshow('image',Binary)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-          
-    # classify content of the window with your classifier and  
-    # determine if the window includes an object (cell) or not
-          # draw window on image
-          #cv2.rectangle(tmp, (x, y), (x + w_width, y + w_height), (255, 0, 0), 2) # draw rectangle on image
-          #plt.imshow(np.array(tmp).astype('uint8'))
-    # show all windows
-    #plt.show()
 
-        
-    """
-    for F in range (1,int(f/tavenf)+1):
-        for C in range(1,int(c/tavenc)+1):
-            ven=V[Ff:has,Cc:ha]
-            #V[Ff:has,Cc:ha]=ven[Ff:has,Cc:ha]
-            #print(Cc,ha)
-            #print(Ff,has)
-            #print(F,C)
-            #print(V[Ff:ha,Cc:has].shape)
-            #plt.imshow(V[Ff:has,Cc:ha],'Greys')
-            #plt.show()
-            #hist = cv2.calcHist([ven],[0],None,[256],[int(np.min(ven)),int(np.max(ven))])
-            #plt.plot(hist)
-            #plt.show()
-            
-            div=8
-            nuevohist=hist.tolist() 
-            l=int(len(nuevohist)/div)
-            i=1
-            a=0
-            suma=np.zeros((div))
-            valm=0
-            hasta=0
-            menor=0
-            for y in range(1,div+1):
-                suma[a]=int (sum(np.asarray(nuevohist[i:int(l)*y])))
-                if suma[a]>valm:
-                    valm=suma[a]
-                    hasta=y
-                i=int(l)*y+1
-                a=a+1
-            porcen=0.3
-            a=hist[int(l*hasta):]
-            a=a.tolist()         
-            #print(hasta*l)
-            #print(len(a))
-            #print(a)
-            hist=hist.tolist() 
-            u=np.max(a)
-            #print(u)
-            umbral1 = hist.index(u)
-            #print(umbral1)
-            
-            a=hist[umbral1:]
-            #print(a)
-            uu=np.min(a)
-            histb=hist[umbral1:]          
-            umbral=histb.index(uu)
-        
-            umbral=umbral+len(hist[:umbral1])
-            #print(umbral)
-            #histc=np.asarray(hist[umbral:])     
-            #print(histc)
-            #med=np.mean(histc)
-            #ii=np.max(histc)
-            #print(med)
-            #histc=histc.tolist() 
-            #uml=histc.index(ii)
-            #print(uml)
-            #hist = cv2.calcHist([ven],[0],None,[256],[umbral,int(np.max(ven))])
-            #plt.plot(hist)
-            #plt.show()
-            #ima=ven.reshape(-1)
-            #plt.ion()
-            #plt.boxplot([ima], sym = 'ko', whis = 1.5)  # El valor por defecto para los bigotes es 1.5*IQR pero lo escribimos explícitamente
-            #plt.xticks([1], ['img'], size = 'large', color = 'k')  # Colocamos las etiquetas para cada distribución
-            #plt.ylabel('Img')
-            #plt.show()
-            #plt.scatter(ven,ven)
-            #umbral=umbral+len(hist[:umbral1])+uml
-            #print(umbral)
-
-            #cv2.imshow('image',ven)
-            #cv2.waitKey(0)
-        
-            ta=ven.shape
-            ta=list(ta)
-            binary=ven.copy()
-            #print(np.max(ven))
-            for x in range(ta[0]):
-                for y in range (ta[1]):
-                    if ven[x,y]<umbral:
-                    #if S[f,c]<H[f,c]:
-                        binary[x,y]=0
-                    else:
-                        binary[x,y]=255
-            Binary[Ff:has,Cc:ha]=binary
-            #cv2.imshow('image',binary)
-            #cv2.waitKey(0)
-            #cv2.destroyAllWindows()
+    for f in range(0,a-tamañoA,tamañoA):
+        for c in range(0,b-tamañoB,tamañoB):
+            cropped = V[f:f+tamañoA,c:c+tamañoB]
            
-            ha=(C+1)*tavenc
-            Cc=C*tavenc  
-            #print(ven.shape)
-        
-        has=(F+1)*tavenf
-        Ff=F*tavenf
+            #test2[f:f+tamañoA,c:c+tamañoB]=test[f:f+tamañoA,c:c+tamañoB]
+            if c==tamañoB*vecesB-tamañoB:
+                cropped = V[f:f+tamañoA,c:]
+                #print('c==')
+                #test2[f:f+tamañoA,c:]=test[f:f+tamañoA,c:]
+            if f==tamañoA*vecesA-tamañoA:
+                 #print('ola')
+                 if c==tamañoB*vecesB-tamañoB:
+                    cropped = V[f:,c:]
+                    #print('f== c==')
+           
+                     #test2[f:,c:]=test[f:,c:]
+                 else:
+                     cropped = V[f:,c:c+tamañoB]
+                     #print('f==')
+                     #test2[f:,c:c+tamañoB]=test[f:,c:c+tamañoB]
+                     #print('dani')
+            ta=cropped.shape
+            ta=list(ta)
+            #print(ta)
+            #print(f,c)
+#            cv2.imshow('image',cropped)
+#            cv2.waitKey(0)
+#            cv2.destroyAllWindows()
+            binary=cropped.copy()
+            hist = cv2.calcHist([cropped],[0],None,[256],[0,255])
+            hist=np.asarray(hist).astype(np.int)
+            zz=list(range(0,len(hist)))
+            for ii in range(len(hist)):
+                zz[ii]=int(hist[ii])
+            
+            #hist=np.transpose(hist) 
+        #    hist=hist.tolist() 
+#            plt.plot(hist)
+#            
+#            plt.show()
+            #peaks,_ = find_peaks(zz)
+            #plt.plot(peaks, hist[peaks], "x")
+            gradiente=np.gradient(zz[200:])
+        #    gradiente=np.gradient(zz)
+        #    plt.plot(gradiente)
+        #    plt.show()
+            
+            uu=find_nearest(gradiente,0)
+            #maxcam=np.min(gradiente)
+            gradiente=gradiente.tolist()
+            umbral1 = gradiente.index(uu)
+            umbral=200+umbral1
+            #umbral=umbral1
+            print(umbral)
+            ta1,ta2=cropped.shape
+            binary=cropped.copy()
+            for ff in range(ta1):
+                   for cc in range (ta2):
+                       if cropped[ff,cc]<umbral:
+                           #if s[f,c]<h[f,c]:
+                           binary[ff,cc]=0
+                       else:
+                           binary[ff,cc]=255
+           # binary = cv2.adaptiveThreshold(cropped, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 15, -22)
+#            
+#            cv2.imshow('image',binary)
+#            cv2.waitKey(0)
+#            cv2.destroyAllWindows()
+            #print(f,c)
+            if c<tamañoB*vecesB-tamañoB and f<tamañoA*vecesA-tamañoA:
+               #print(f,c)
+               Binary[f:f+tamañoA,c:c+tamañoB] = binary
+            if c==tamañoB*vecesB-tamañoB and f<tamañoA*vecesA-tamañoA:
+              # print('paso')
+               Binary[f:f+tamañoA,c:]=binary
+            if f==tamañoA*vecesA-tamañoA:
+               if c==tamañoB*vecesB-tamañoB:
+                  Binary[f:,c:]=binary
+               else:
+                  Binary[f:,c:c+tamañoB]=binary
+            #print(Binary[x:x + w_width, y:y + w_height].shape)
+            #Binary[x:x + w_width, y:y + w_height]=binary  
+   
+    fila,Col=G.shape
+    Binaryfinal=np.zeros((fila,Col)).astype(np.uint8)
+    Binaryfinal[y3:y3+h3,x3:x3+w3]=Binary   
+#    cv2.imshow('image',V)
+#    cv2.waitKey(0)
+#    cv2.imshow('image',Binaryfinal)
+#    cv2.waitKey(0)
+#    cv2.destroyAllWindows()
     
-    print(imgfile)
-    cv2.imshow('image',V)
-    cv2.waitKey(0)
-    cv2.imshow('image',Binary)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    #"""
+    filetxt=imgfile[0:len(imgfile)-3]+'txt'      
+    bboxfile=filetxt
+    boxes = read_boxes(bboxfile)
+    boxes_abs = yolo2voc(boxes, img.shape)  
+    re=0
+    dm=0
+#    cv2.imshow('image',close)
+#    cv2.waitKey(0)
+#    cv2.destroyAllWindows()
+#    
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    dilatacion = cv2.dilate( Binaryfinal,kernel,iterations = 1)
+
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    close=cv2.morphologyEx(dilatacion, cv2.MORPH_CLOSE, kernel)
+    
+    for b in boxes_abs:
+        cls, x1, y1, x2, y2 = b
+        if cls == 3:
+            dm=dm+1
+        if cls==0:
+            re=re+1
+            
+    if dm>0 and re==0:
+        dire='./segmentacionSthele_CanalG_ventanas/DM/'+imgfile
+        cv2.imwrite(dire,close)
+        print('dm')
+    else:
+        direM='./segmentacionSthele_CanalG_ventanas/RE/'+imgfile
+        cv2.imwrite(direM,close)
+        print('re')
+
+    
+

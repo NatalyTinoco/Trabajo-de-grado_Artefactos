@@ -63,16 +63,16 @@ for file in glob.glob("*.jpg"):
             img1=img
             for z in range((3)):
                 img1[:,:,z]=(img1[:,:,z]*(mascara))  
-            hista = cv2.calcHist([img1], [0, 1, 2], None, [8, 8, 8],[0, 256, 0, 256, 0, 256])
+            hista = cv2.calcHist([img1], [0, 1, 2], None, [8, 8, 8],[1, 256, 1, 256, 1, 256])
             img = read_img(imgfile)
             img2=img
             for z in range((3)):
                 img2[:,:,z]=(img2[:,:,z]*(mascara2))  
-            histb = cv2.calcHist([img2], [0, 1, 2], None, [8, 8, 8],[0, 256, 0, 256, 0, 256])   
+            histb = cv2.calcHist([img2], [0, 1, 2], None, [8, 8, 8],[1, 256, 1, 256, 1, 256])   
             ### Calculo de medidas
-            bordes = cv2.Canny(img,180,260)
-            plt.imshow(bordes)
-            plt.show()
+            #bordes = cv2.Canny(img,180,260)
+#            plt.imshow(bordes)
+#            plt.show()
             #Correlación
             correlacion=cv2.compareHist(hista,histb,cv2.HISTCMP_CORREL)
             correlacionT[i,norm]=correlacion
@@ -93,7 +93,7 @@ for file in glob.glob("*.jpg"):
 #%%
 import openpyxl
 
-doc = openpyxl.load_workbook('medidasFiltrosDM.xlsx')
+doc = openpyxl.load_workbook('medidasFiltrosDMestesi.xlsx')
 doc.get_sheet_names()
 hoja = doc.get_sheet_by_name('Hoja1')
 table = ['E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S']

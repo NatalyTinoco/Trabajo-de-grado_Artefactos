@@ -37,15 +37,15 @@ def compararDM(img,boxes,imgfile,imgC,a):
         img2=imgC
         for z in range((3)):
             img2[:,:,z]=(img2[:,:,z]*(mascara2))  
-        hista = cv2.calcHist([img1], [0, 1, 2], None, [8, 8, 8],[0, 256, 0, 256, 0, 256])
-        histb = cv2.calcHist([img2], [0, 1, 2], None, [8, 8, 8],[0, 256, 0, 256, 0, 256])   
+        hista = cv2.calcHist([img1], [0, 1, 2], None, [8, 8, 8],[1, 256, 1, 256, 1, 256])
+        histb = cv2.calcHist([img2], [0, 1, 2], None, [8, 8, 8],[1, 256, 1, 256, 1, 256])   
            
     else:
         #print(img1.shape,mascara.shape)
         img1=img1*mascara
         img2=imgC*mascara2
-        hista = cv2.calcHist([img1], [0], None, [256], [0, 256])
-        histb = cv2.calcHist([img2], [0], None, [256], [0, 256])   
+        hista = cv2.calcHist([img1], [0], None, [256], [1, 256])
+        histb = cv2.calcHist([img2], [0], None, [256], [1, 256])   
     """if a==2:
         img1=img1*mascara
         img2=imgC[:,:,1]*mascara2

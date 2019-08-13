@@ -152,7 +152,7 @@ for file in glob.glob("*.jpg"):
 #%%
 import openpyxl
 
-doc = openpyxl.load_workbook('medidasEspaciosdecolorDM.xlsx')
+doc = openpyxl.load_workbook('medidasEspaciosdecolorDMestesi.xlsx')
 doc.get_sheet_names()
 hoja = doc.get_sheet_by_name('Hoja1')
 table = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY']
