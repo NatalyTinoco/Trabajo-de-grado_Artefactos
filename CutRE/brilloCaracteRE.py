@@ -12,16 +12,29 @@ import numpy as np
 import glob 
 import pandas as pd
 from scipy import stats
-from colour import Color
+#from colour import Color
+from Normalizacion import normalizacionMaxMin
+from equalization import adaptativeequalization
 
 brillomoda = []
 brillomedia = []
+luminanceMedia = []
 
 for image in glob.glob('*.jpg'):
-    image = 'bboxreflejo (1).jpg'
+    #image = 'bboxreflejo (7).jpg'
+    #image = '0288-0000583.jpg'
     im = cv2.imread(image)
-    R,G,B=cv2.split(im)
-    width,heigth,ch=im.shape
+    imNorm = normalizacionMaxMin(im)
+    imEqu = adaptativeequalization(imNorm)
+    R,G,B=cv2.split(imEqu)
+    width,heigth,ch=imEqu.shape
+    #plt.hist(imgo.ravel(),256,[0,256])
+    #plt.hist(B,256,[0,256])
+    #plt.show()
+    
+    #cv2.imshow('image',B)
+    #cv2.waitKey(0)
+    #cv2.destroyAllWindows()
     ##Brillo
     brillo=np.sqrt(0.241*R**2+0.691*G**2+0.068*B**2)/(width*heigth)
     brillomedia.append(np.mean(brillo))
@@ -29,9 +42,9 @@ for image in glob.glob('*.jpg'):
     
     #Luminance
     #c1 = Color(R, G, B)
-    luminance = (0.2126*im[0]+0.7152*im[1]+0.0722*im[2])
+    luminance = (0.2126*imEqu[0]+0.7152*imEqu[1]+0.0722*imEqu[2])
     modeL = stats.mode(luminance)
-    meanL = np.mean(luminance)
+    luminanceMedia.append(np.mean(luminance))
     ##Varianza
     tamañoW = 5
     tamañoH = 5
@@ -49,7 +62,8 @@ for image in glob.glob('*.jpg'):
 #                    lv=im[w+t1,h+t2] - np.mean(cropped)
 #                    print(lv)
 
-datos = {'Media':brillomedia}
+datos = {'Brillo':brillomedia,
+         'Luminancia': luminanceMedia}
 
 datos = pd.DataFrame(datos)
 datos.to_excel('Características_brilloRE.xlsx')
