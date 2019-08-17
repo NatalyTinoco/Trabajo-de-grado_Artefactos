@@ -91,8 +91,8 @@ def filtrogabor(croppedimg):
     #wall = img_as_float(data.load('rough-wall.png'))[shrink]
     #image_names = ('brick')
     #images = (brick)
-    plt.imshow(brick)
-    plt.show()
+#    plt.imshow(brick)
+#    plt.show()
     img=brick.copy()
     # prepare reference features
     ref_feats = np.zeros((1, len(kernels), 2), dtype=np.double)
@@ -153,24 +153,82 @@ def filtrogabor(croppedimg):
 #                        plt.show()
         j[i]=kernel
         i=i+1
-        print(kernel.shape)
+#        print(kernel.shape)
         
-        vmin = np.min(powers)
-        vmax = np.max(powers)
+#        vmin = np.min(powers)
+#        vmax = np.max(powers)
         #print(vmin,vmax)
         #print(np.asarray(powers).shape)
     
         for patch in zip(powers):
-            print(np.asarray(patch).shape)
+#            print(np.asarray(patch).shape)
             patch=np.asarray(list(patch))
             #print(type(patch))
-            plt.imshow(patch[0,:,:], vmin=vmin, vmax=vmax)
-            plt.show()
+#            plt.imshow(patch[0,:,:], vmin=vmin, vmax=vmax)
+#            plt.show()
             p[ii]=patch[0,:,:]
             ii=ii+1
-    return[]        
+    return p        
+def laplaciano (img):
+    lxx=1/6*np.array([[0,0,1], [0,-2,0],[1,0,0]])
+    lyy=1/6*np.array([[1,0,0], [0,-2,0],[0,0,1]])
     
-    
+    #tipomas=3
+    #Vnu,tama,tamanu=agregarceros(V,tipomas)
+    #la=filtro(Vnu,tama,tamanu,tipomas,laplaciano,V)
+    lx2=cv2.filter2D(V, -1, lxx)
+    ly2=cv2.filter2D(V, -1, lyy)
+    lx=np.array([-1,2,-1])
+    ly=np.transpose(lx)
+    lxd=cv2.filter2D(V, -1, lx)
+    lyd=cv2.filter2D(V, -1, ly)
+    la=lxd+lyd+lx2+ly2
+    La=0
+    f,c=la.shape
+    suma=0
+    for x in range(f):
+        for y in range (c):
+            suma=suma+abs(la[x,y])
+            #print(suma)
+    #print(suma)
+    La=(1/f*c)*suma
+    varLa=0
+    for x in range(f):
+        for y in range (c):
+            varLa=(varLa)+(la[x,y]-La)**(2)
+            #print(suma)
+    #print(varLa)
+    return La, varLa
+
+mediaRE=[]
+medianaRE=[]
+desviacionRE=[]
+lagaborRE=[]
+varlagaborRE=[]
+laRE=[]
+varlaRE=[]
+entropiaRE=[]
+
+mediaDM=[]
+medianaDM=[]
+desviacionDM=[]
+lagaborDM=[]
+varlagaborDM=[]
+laDM=[]
+varlaDM=[]
+entropiaDM=[]
+
+
+mediaNO=[]
+medianaNO=[]
+desviacionNO=[]
+lagaborNO=[]
+varlagaborNO=[]
+laNO=[]
+varlaNO=[]
+entropiaNO=[]
+
+
 for image in glob.glob('*.jpg'):
     # image = '00002.jpg'
     im = cv2.imread(image)
@@ -235,9 +293,16 @@ for image in glob.glob('*.jpg'):
                          else:
                              cropped = V1[f:,c:c+tamañoB]
                              croppedrgb = im[f:,c:c+tamañoB]
-                    
-                    filtrogabor(cropped)  
-                             #test2[f:,c:c+tamañoB]=test[f:,c:c+tamañoB]
+                    print(cropped.shape)
+                    p=filtrogabor(cropped)  
+                    mediaDM.append(np.mean(p[3]))
+                    medianaDM.append(np.median(p[3])) 
+                    desviacionDM.append(np.var(p[3]))
+                    lagaborDM.append(laplaciano (p[3]))
+                    varlagaborDM.append(laplaciano ( p[3]))
+                    laDM.append(laplaciano ( croppedrgb))
+                    varlaDM.append(laplaciano (croppedrgb))
+                    entropiaDM.append(skimage.measure.shannon_entropy(p[3]))
                              #print('dani')
                     #cropFou=cropped
 #                    cropped_1=cropped.copy()
@@ -281,7 +346,22 @@ for image in glob.glob('*.jpg'):
                          croppedrgb2 = im[f:,c:c+tamañoB]
                 cropped2_1=cropped2.copy()
                 croppedrgb2_1=croppedrgb2.copy()    
-                filtrogabor(cropped2)  
+                print(cropped2.shape)
+                pp=filtrogabor(cropped2)
+                mediaRE.append(np.mean(pp[3]))
+                medianaRE.append(np.median(pp[3]))
+                #modaDM_LH.append(np.mean(stats.mode(cropFou)))    
+                desviacionRE.append(np.var(pp[3]))
+                lagaborRE.append(laplaciano (pp[3]))
+                varlagaborRE.append(laplaciano ( pp[3]))
+                laRE.append(laplaciano ( croppedrgb2))
+                varlaRE.append(laplaciano ( croppedrgb2))
+                entropiaRE.append(skimage.measure.shannon_entropy(pp[3]))
+            
+                
+#                plt.imshow(pp[3],'Greys')
+#                plt.show()
+                
     if re==0 and dm==0 and imunda==0:
         print('========================================NO========================================')
             
@@ -307,7 +387,52 @@ for image in glob.glob('*.jpg'):
                          croppedrgb3 = im[f:,c:c+tamañoB]
                 cropped3_1=cropped3.copy()
                 croppedrgb3_1=croppedrgb3.copy()            
-                filtrogabor(cropped3)  
+                ppp=filtrogabor(cropped3)  
+               
+#                plt.imshow(ppp[3],'Greys')
+#                plt.show()
+                mediaNO.append(np.mean(ppp[3]))
+                medianaNO.append(np.median(ppp[3])) 
+                desviacionNO.append(np.var(ppp[3]))
+                lagaborNO.append(laplaciano (ppp[3]))
+                varlagaborNO.append(laplaciano (ppp[3]))
+                laNO.append(laplaciano ( croppedrgb3))
+                varlaNO.append(laplaciano ( croppedrgb3))
+                entropiaNO.append(skimage.measure.shannon_entropy(ppp[3]))
+                   
 
 
+import pandas as pd    
+datos = {'EntropíaDM':entropiaDM,
+         'MediaDM':mediaDM,
+         'DesviacionDM':desviacionDM,
+         'lAPLACIANOgaborDM':lagaborDM,
+         'VarianzalaplacianagaborDM':varlagaborDM,
+         'MedianaDM':medianaDM,
+         'lAPLACIANODM':laDM,
+         'VarianzalaplacianaDM':varlaDM}
+datos = pd.DataFrame(datos)
+datos.to_excel('DiferentesCaracteristicasDM.xlsx') 
+  
+datos = {'EntropíaRE':entropiaRE,
+         'MediaRE':mediaRE,
+         'DesviacionRE':desviacionRE,
+         'lAPLACIANOgaborRE':lagaborRE,
+         'VarianzalaplacianagaborRE':varlagaborRE,
+         'MedianaRE':medianaRE,
+         'lAPLACIANORE':laRE,
+         'VarianzalaplacianaRE':varlaRE}
+datos = pd.DataFrame(datos)
+datos.to_excel('DiferentesCaracteristicasRE.xlsx')  
 
+datos = {'EntropíaNO':entropiaNO,
+         'MediaNO':mediaNO,
+         'DesviacionNO':desviacionNO,
+         'lAPLACIANOgaborNO':lagaborNO,
+         'VarianzalaplacianagaborNO':varlagaborNO,
+         'MedianaNO':medianaNO,
+         'lAPLACIANONO':laNO,
+         'VarianzalaplacianaNO':varlaNO}
+datos = pd.DataFrame(datos)
+datos.to_excel('DiferentesCaracteristicasNO.xlsx')  
+  
