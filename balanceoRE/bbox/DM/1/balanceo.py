@@ -34,6 +34,7 @@ for image in glob.glob('*.jpg'):
     if len(j)<=imgq:
         if i%saltos==0:
             dire=dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/balanceoRE/bbox/DM/'+image
+            
             shutil.move(image,dire)
             
             j.append(i)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Mon Aug 12 23:04:25 2019
 
@@ -13,38 +12,7 @@ import glob
 import numpy as np
 import matplotlib.pyplot as plt
 
-im = cv2.imread('00000_seg.jpg',0)
-im2 = cv2.imread('00000.jpg')
-imNorm = cv2.normalize(im,None,0,1,norm_type=cv2.NORM_MINMAX,dtype=cv2.CV_8UC3)
-contours,hierarchy = cv2.findContours(imNorm, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-
-for c in range(len(contours)):
-    areas = cv2.contourArea(contours[c])
-    cnt = contours[c]
-    x,y,w,h = cv2.boundingRect(cnt)
-    cv2.rectangle(im2,(x,y),(x+w,y+h),(0,255,0),2)
-
-cv2.imshow("Show",im2)
-cv2.imwrite('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/CutRE/caracForma/contornos.jpg',im2)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-areas = [cv2.contourArea(c) for c in contours]
-max_index = np.argmax(areas)
-cnt=contours[max_index]
-x,y,w,h = cv2.boundingRect(cnt)
-cv2.rectangle(im2,(x,y),(x+w,y+h),(0,255,0),2)
-cv2.imshow("Show",im2)
-
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-    #plt.imshow(im)
-    #plt.show()
-
-cv2.drawContours(im,contours,-1,(0,255,0),3)
-plt.hist(im.ravel(),256,[0,256])
-plt.show()
-
+im = cv2.imread('00000_seg.jpg')
 #im = cv2.imread('00000.jpg')
 boxes = read_boxes('00000.txt')
 boxes_abs = yolo2voc(boxes, im.shape)
