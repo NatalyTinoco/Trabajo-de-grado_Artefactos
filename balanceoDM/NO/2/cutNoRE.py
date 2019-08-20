@@ -40,41 +40,32 @@ for image in glob.glob('*.jpg'):
     cnt=contours[max_index]
     x,y,w,h = cv2.boundingRect(cnt)
     a,b,ch = im[y:y+h,x:x+w].shape
-    tamañoA=50
-    tamañoB=50
-    re=0
-    for f in range(0,a-tamañoA,tamañoA):
-       for c in range(0,b-tamañoB,tamañoB):
-            cropped=ventaneoo(tamañoA, tamañoB,a,b,f,c, im)
-            dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/balanceoDM/50x50/NO/2/'+image[0:len(image)-3]+'-'+str(re)+'.jpg'
-            cv2.imwrite(dire,cropped)
-            re=re+1
-    tamañoaA=150
-    tamañoaB=150
-    rea=0
-    for fa in range(0,a-tamañoaA,tamañoaA):
-       for ca in range(0,b-tamañoaB,tamañoaB):
-            croppeda=ventaneoo(tamañoaA, tamañoaB,a,b,fa,ca, im)
-            dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/balanceoDM/150x150/NO/2/'+image[0:len(image)-3]+'-'+str(rea)+'.jpg'
-            cv2.imwrite(dire,croppeda)
-            rea=rea+1
-    tamañoa1A=500
-    tamañoa1B=500
+    im=im[y:y+h,x:x+w]
+#    tamañoA=50
+#    tamañoB=50
+#    re=0
+#    for f in range(0,a-tamañoA,tamañoA):
+#       for c in range(0,b-tamañoB,tamañoB):
+#            cropped=ventaneoo(tamañoA, tamañoB,a,b,f,c, im)
+#            dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/balanceoDM/50x50/NO/1/'+image[0:len(image)-3]+'-'+str(re)+'.jpg'
+#            cv2.imwrite(dire,cropped)
+#            re=re+1
+#    tamañoaA=150
+#    tamañoaB=150
+#    rea=0
+#    for fa in range(0,a-tamañoaA,tamañoaA):
+#       for ca in range(0,b-tamañoaB,tamañoaB):
+#            croppeda=ventaneoo(tamañoaA, tamañoaB,a,b,fa,ca, im)
+#            dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/balanceoDM/150x150/NO/1/'+image[0:len(image)-3]+'-'+str(rea)+'.jpg'
+#            cv2.imwrite(dire,croppeda)
+#            rea=rea+1
+    tamañoa1A=300
+    tamañoa1B=300
     rea1=0
     for fa1 in range(0,a-tamañoa1A,tamañoa1A):
        for ca1 in range(0,b-tamañoa1B,tamañoa1B):
             croppeda1=ventaneoo(tamañoa1A, tamañoa1B,a,b,fa1,ca1, im)
-            dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/balanceoDM/500x500/NO/2/'+image[0:len(image)-3]+'-'+str(rea)+'.jpg'
+            dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/balanceoDM/500x500/NO/2/'+image[0:len(image)-3]+'-'+str(rea1)+'.jpg'
             cv2.imwrite(dire,croppeda1)
-            rea=rea+1
+            rea1=rea1+1
     print(image)
-#   
-#            dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/balanceoRE/bbox/NO/2/'+image[0:len(image)-3]+'-'+str(re)+'.jpg'
-#            cv2.imwrite(dire,cropped)
-            # 
-            
-            #print(test[f:f+tamañoA,c:c+tamañoB])
-        
-
-#promedioa = np.mean(tamañoA)
-#promediob = np.mean(tamañoB)
