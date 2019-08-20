@@ -58,3 +58,17 @@ data.to_excel('ambas.xlsx')
 #    plt.show()
 #           
 #    if dm > 0:
+
+#%%
+from pathlib import Path
+
+data_folder = Path("C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subRE")
+file_to_open = data_folder / "ListasubRE.txt"
+
+f = open(file_to_open)
+print(f.read())
+
+#%%
+import sys
+
+sys.path.insert(1, 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subRE')
