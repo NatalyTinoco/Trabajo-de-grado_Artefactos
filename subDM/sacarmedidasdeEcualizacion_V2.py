@@ -59,13 +59,13 @@ for col in range(sheet.ncols):
             ima = tiposNorm[norm](imgNorm)
             ima2 = tiposNorm[norm](img2)
         ima3=imgNorm.copy()    
-#        img1,img2,hista,histb,correlacion,Bhattacharyya, euclidiana=comparacionhistRE(ima,ima2,segmenta)
-#       
-#        correlacionT[norm].append(correlacion)
-#        BhattacharyyaT[norm].append(Bhattacharyya)
-#        euclidianaT[norm].append(euclidiana)
-#        rangomin[norm].append(ima3.min())
-#        rangomax[norm].append(ima3.max())
+        img1,img2,hista,histb,correlacion,Bhattacharyya, euclidiana=comparacionhistRE(ima,ima2,segmenta)
+       
+        correlacionT[norm].append(correlacion)
+        BhattacharyyaT[norm].append(Bhattacharyya)
+        euclidianaT[norm].append(euclidiana)
+        rangomin[norm].append(ima3.min())
+        rangomax[norm].append(ima3.max())
         
         gray=cv2.cvtColor(ima,cv2.COLOR_RGB2GRAY)
         contras = contraste(gray)
@@ -78,11 +78,11 @@ for col in range(sheet.ncols):
 
     c=0
 
-x = statistics.mean(contrasteT[3])
-print(x)
-
-a = statistics.stdev(contrasteT[3])
-print(a)
+#x = statistics.mean(contrasteT[3])
+#print(x)
+#
+#a = statistics.stdev(contrasteT[3])
+#print(a)
 
 
 data = {'Correlación sin normalizar': correlacionT[0],
@@ -108,4 +108,4 @@ data = {'Correlación sin normalizar': correlacionT[0],
 
 data_excel = pd.DataFrame(data)
 
-data_excel.to_excel("MedidasEcualizacion-maxmin.xlsx")
+data_excel.to_excel("MedidasEcualizacionDM-maxmin.xlsx")

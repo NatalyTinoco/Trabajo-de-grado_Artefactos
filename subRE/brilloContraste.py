@@ -32,7 +32,7 @@ def contraste(img):
         i+=1
     cont = suma * suma
     cont = np.sqrt(suma / total)
-    contraste = int(cont)
+    contraste = cont
     #print("El contraste de la imagen es: ", contraste)
     return contraste
 
