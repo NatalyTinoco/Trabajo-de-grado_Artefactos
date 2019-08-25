@@ -7,28 +7,32 @@ Created on Thu Jul 18 20:07:00 2019
 import numpy as np
 def contraste(img):
     im11 = img
-    arreglo = np.array(im11.size)
+    #arreglo = np.array(im11.size)
+    #print(im11.size)
+    #total = arreglo[0] * arreglo[1]
+    arreglo=im11.shape
+    #arreglo=list(arreglo)
     total = arreglo[0] * arreglo[1]
     i = 0
     suma = 0
-    while i < im11.size[0]:
+    while i < arreglo[0]:
         j = 0
-        while j < im11.size[1]:
-            suma = suma + im11.getpixel((i, j))
+        while j < arreglo[1]:
+            suma = suma + im11[i, j]
             j+=1        
         i+=1
     brillo = suma / total    
     i = 0
-    while i < im11.size[0]:
+    while i < arreglo[0]:
         j = 0
-        while j < im11.size[1]:
-            aux = im11.getpixel((i, j)) - brillo
+        while j < arreglo[1]:
+            aux = im11[i, j] - brillo
             suma = suma + aux
             j+=1
         i+=1
     cont = suma * suma
     cont = np.sqrt(suma / total)
-    contraste = int(cont)
+    contraste = cont
     #print("El contraste de la imagen es: ", contraste)
     return contraste
 
