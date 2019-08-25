@@ -23,10 +23,17 @@ from PIL import Image
 from skimage.filters import rank
 
 import glob
-
+umbrallist=[]
 for imgfile in glob.glob("*.jpg"):
+    imgfile='00002.jpg'
+#    imgfile='CT56_colitis_02446.jpg'
     ima=cv2.imread(imgfile)
+#    ROI=cv2.imread('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subData/segROI/ROI_Manuales/'+imgfile,0)
+#    ROI = cv2.normalize(ROI, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+#   
     
+#    plt.imshow(II, cmap=plt.cm.gray)
+#    plt.show()   
     """ # Primera forma #"""
     #imR, imG, II=cv2.split(ima)
     """ #Segunda forma #"""
@@ -38,15 +45,15 @@ for imgfile in glob.glob("*.jpg"):
     
     ta=II.shape
     ta=list(ta)
-    #plt.imshow(II, cmap=plt.cm.gray)
-    #plt.show()        
+    plt.imshow(II, cmap=plt.cm.gray)
+    plt.show()        
     MIN=int(np.min(II))
     MAX=int(np.max(II))
   
     hist = cv2.calcHist([II],[0],None,[MAX+1],[MIN,MAX])
     hist = cv2.calcHist([II],[0],None,[256],[0,255])
-    #plt.plot(hist)
-    #plt.show()
+    plt.plot(hist)
+    plt.show()
     
     div=6
     #div=6
@@ -90,6 +97,7 @@ for imgfile in glob.glob("*.jpg"):
     #"""
     #umbral=int((l*hasta)*porcen)
     binary=II.copy()
+    umbrallist.append(umbral)
     print(umbral)
     for f in range(ta[0]):
         for c in range (ta[1]):
@@ -117,12 +125,11 @@ for imgfile in glob.glob("*.jpg"):
     cnt=contours[max_index]
     x,y,w,h = cv2.boundingRect(cnt)
     #cv2.rectangle(ima,(x,y),(x+w,y+h),(0,255,0),2)
-    cv2.imshow("Show",close)
-    #plt.imshow(im)
-    #plt.show()
-    
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    #cv2.imshow("Show",close)
+
+#    
+#    cv2.waitKey(0)
+#    cv2.destroyAllWindows()
     #"""
     #print((y,x),(y+h,x+w))
     tru=15
@@ -134,15 +141,27 @@ for imgfile in glob.glob("*.jpg"):
             else:
                 close[f,c]=close[f,c]
 
-    
-    #"""
-    #z2
-    #Z3
-    #V
-    dire='./segROI/#5/Z3/'+imgfile
-    #img=cv2.cvtColor(im,cv2.COLOR_BGR2RGB)   
-    #cv2.imwrite(dire,close)
-    k = cv2.waitKey(1000)
-    #destroy the window
-    cv2.destroyAllWindows()
+
+    plt.imshow(close,'Greys')
+    plt.show()
+    ROI = cv2.normalize(close, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+    for z in range (3):
+        ima[:,:,z]=ima[:,:,z]*ROI
+    ima=cv2.cvtColor(ima,cv2.COLOR_RGB2BGR)
+    plt.imshow(ima)
+    plt.show() 
+#    #"""
+#    #z2
+#    #Z3
+#    #V
+##    dire='./segROI/#5/Z3/'+imgfile
+##    #img=cv2.cvtColor(im,cv2.COLOR_BGR2RGB)   
+##    #cv2.imwrite(dire,close)
+#    k = cv2.waitKey(1000)
+#    #destroy the window
+#    cv2.destroyAllWindows()
     print(imgfile)
+#import pandas as pd    
+#datos = {'umbral':umbrallist}
+#datos = pd.DataFrame(datos)
+#datos.to_excel('umbralROI.xlsx')

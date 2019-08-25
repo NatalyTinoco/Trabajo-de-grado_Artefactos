@@ -67,8 +67,13 @@ for image in glob.glob('*.jpg'):
     im = cv2.imread(image)
     aa,bb,c = im.shape    
     croppedrgb=im
-    #V=cropped
-    cropped=cv2.imread('./V/'+image,0)
+    im=cv2.normalize(im, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+    aa,bb,c = im.shape    
+    croppedrgb=im
+    croppedrgb_2=croppedrgb.copy()
+    HSV=cv2.cvtColor(im,cv2.COLOR_RGB2HSV)
+    H,S,cropped=cv2.split(HSV)
+    
     print(cropped.shape)
     cropFou=Fourier(cropped)
     g,contraste,energia,homogeneidad, correlacion, disimi, ASM,entropia=GLCM(cropFou)
@@ -79,6 +84,7 @@ for image in glob.glob('*.jpg'):
     disi.append(disimi)
     AS.append(ASM)
     entrop.append(entropia)
+    
     g1,contraste1,energia1,homogeneidad1, correlacion1, disimi1, ASM1,entropia1=GLCM(cropped)
     contrast1.append(contraste1)
     energi1.append(energia1)

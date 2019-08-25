@@ -73,8 +73,12 @@ for imgfile in glob.glob("*.jpg"):
     Binary=V.copy()
     
     a,b = V.shape
-    tamañoA = 150
-    tamañoB = 150
+#    tamañoA = 150
+#    tamañoB = 150
+#    tamañoA = 50
+#    tamañoB = 50
+    tamañoA = 200
+    tamañoB = 200
     vecesA = int(a/tamañoA)
     vecesB = int(b/tamañoB)
     
@@ -181,10 +185,10 @@ for imgfile in glob.glob("*.jpg"):
 #    cv2.waitKey(0)
 #    cv2.destroyAllWindows()
 #    
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10, 10))
     dilatacion = cv2.dilate( Binaryfinal,kernel,iterations = 1)
 
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10, 10))
     close=cv2.morphologyEx(dilatacion, cv2.MORPH_CLOSE, kernel)
     
     for b in boxes_abs:
@@ -195,11 +199,11 @@ for imgfile in glob.glob("*.jpg"):
             re=re+1
             
     if dm>0 and re==0:
-        dire='./segmentacionSthele_CanalG_ventanas/DM/'+imgfile
-        cv2.imwrite(dire,close)
+#        dire='./segmentacionSthele_CanalG_ventanas/DM/'+imgfile
+#        cv2.imwrite(dire,close)
         print('dm')
     else:
-        direM='./segmentacionSthele_CanalG_ventanas/RE/'+imgfile
+        direM='./segmentacionSthele_CanalG_ventanas/RE_6/'+imgfile
         cv2.imwrite(direM,close)
         print('re')
 

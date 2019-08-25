@@ -7,8 +7,6 @@ Created on Wed Jul 31 10:22:47 2019
 import cv2
 import numpy as np
 def ROI(ima):
-    
-    
     imA=cv2.cvtColor(ima,cv2.COLOR_RGB2XYZ)
     I,I,II=cv2.split(imA)
     

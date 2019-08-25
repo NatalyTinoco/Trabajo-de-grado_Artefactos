@@ -20,9 +20,9 @@ def ROI(ima):
     MAX=int(np.max(II))
   
     hist = cv2.calcHist([II],[0],None,[MAX+1],[MIN,MAX])
-    hist = cv2.calcHist([II],[0],None,[256],[0,255])
-    #plt.plot(hist)
-    #plt.show()
+#    hist = cv2.calcHist([II],[0],None,[256],[0,255])
+#    #plt.plot(hist)
+#    #plt.show()
     
     div=6
     #div=6

@@ -9,7 +9,7 @@ import pylab as plt
 from matplotlib import pyplot as plt
 import numpy as np 
 from pylab import *
-from readimg import read_img #leer imagines ### img=read_img(imgfile)##
+#from readimg import read_img #leer imagines ### img=read_img(imgfile)##
 from skimage.morphology import disk
 
 from skimage.filters import threshold_otsu
@@ -22,7 +22,7 @@ from PIL import Image
 import glob
 
 for imgfile in glob.glob("*.jpg"):
-    ima=read_img(imgfile)
+    ima=cv2.imread(imgfile)
     """ # Primera forma #"""
     imR, imG, II=cv2.split(ima)
     """ #Segunda forma #"""
@@ -32,6 +32,9 @@ for imgfile in glob.glob("*.jpg"):
     #imA=cv2.cvtColor(ima,cv2.COLOR_RGB2XYZ)
     #I,I,II=cv2.split(imA)
     
+    hist = cv2.calcHist([II],[0],None,[256],[0,255])
+    plt.plot(hist)
+    plt.show()
     
     ta=II.shape
     ta=list(ta)
@@ -52,12 +55,15 @@ for imgfile in glob.glob("*.jpg"):
 
     #plt.imshow(opening, cmap=plt.cm.gray)
     #plt.show()
-   
-    dire='./segROI/#1/B/'+imgfile
-    #img=cv2.cvtColor(im,cv2.COLOR_BGR2RGB)   
-    cv2.imwrite(dire,close)
+#   
+#    dire='./segROI/#1/B/'+imgfile
+#    #img=cv2.cvtColor(im,cv2.COLOR_BGR2RGB)   
+#    cv2.imwrite(dire,close)
     k = cv2.waitKey(1000)
     #destroy the window
     cv2.destroyAllWindows()
     
-
+#datos = pd.DataFrame(datos)
+##datos.to_excel('GLCMRES.xlsx') 
+##datos.to_excel('GLCMRE.xlsx')
+#datos.to_excel('GLCMREY.xlsx')
