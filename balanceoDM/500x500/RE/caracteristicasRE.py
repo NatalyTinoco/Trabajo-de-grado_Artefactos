@@ -583,4 +583,4 @@ datos = {'ContrasteTF':contrastTF,
 
 datos = pd.DataFrame(datos)
 #datos.to_excel('GLCMRES.xlsx') 
-datos.to_excel('Caracateristicas_DM_300x300.xlsx') 
+datos.to_excel('Caracateristicas_RE_300x300.xlsx') 

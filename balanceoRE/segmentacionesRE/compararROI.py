@@ -50,7 +50,7 @@ for image in glob.glob('*.jpg'):
     segventanas_4=cv2.imread('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subData/segmentacionSthele_CanalG_ventanas/BBOX_4/'+image,0)
     segventanas_5=cv2.imread('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subData/segmentacionSthele_CanalG_ventanas/BBOX_5/'+image,0)
     segventanas_6=cv2.imread('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subData/segmentacionSthele_CanalG_ventanas/BBOX_6/'+image,0)
-
+    print('Me amas yo lo se')
     print(ssim(original, original))
     print(mse(original, original))
     print('dice2',dice(original, original))
