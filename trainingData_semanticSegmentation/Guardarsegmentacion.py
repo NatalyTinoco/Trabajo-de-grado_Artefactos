@@ -50,3 +50,14 @@ for image in glob.glob("*mask.tif"):
     os.rename(image, dst)
     print(image)
     
+    
+#%%
+import shutil
+
+src = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/trainingData_semanticSegmentation/0_original_images/'
+dest = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/'
+for col in range(xl_sheet.ncols):
+    ttfile = xl_sheet.cell_value(1, col)
+    if ttfile != '':
+        ttfile=ttfile+'jpg'
+        shutil.copyfile(src+ttfile,dest+ttfile)
