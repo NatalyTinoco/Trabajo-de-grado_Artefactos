@@ -301,6 +301,7 @@ for imgfile in glob.glob("*.jpg"):
     entropTF.append(entropia)
     """DF"""
     cropFou2=DFT(cropped)
+    cropFou2= cropFou2.asype(np.uint8)
     g2,contraste2,energia2,homogeneidad2, correlacion2, disimi2, ASM2,entropia2=GLCM(cropFou2)
     contrastDFT.append(contraste2)
     energiDFT.append(energia2)
@@ -331,11 +332,12 @@ for imgfile in glob.glob("*.jpg"):
     l2altas.append(LA.norm(altasfrec))
     l2bajas.append(LA.norm(bajasfrec))
     pp=2
-    beta1,dif=L2norm2images(aa,bb,pp,LH,LL)
+    aa5,bb5=LL.shape
+    beta1,dif=L2norm2images(aa5,bb5,pp,LH,LL)
     difwaveletLH.append(dif)
-    beta2,dif2=L2norm2images(aa,bb,pp,HL,LL)
+    beta2,dif2=L2norm2images(aa5,bb5,pp,HL,LL)
     difwaveletHL.append(dif2)
-    beta3,dif3=L2norm2images(aa,bb,pp,HH,LL)
+    beta3,dif3=L2norm2images(aa5,bb5,pp,HH,LL)
     difwaveletHH.append(dif3)
     mediaLL.append(np.mean(LL))
     mediaLH.append(np.mean(LH))
@@ -453,9 +455,9 @@ for imgfile in glob.glob("*.jpg"):
     maxderivadaEDFT.append(alfapma)
     
     """ Maxima Saturación"""
-    R,G,B=cv2.split(croppedrgb)
-    mSatu=1-(3/(R+G+B))*(np.min(R),np.min(G),np.min(B))
-    maximaSaturacionRGB.append(mSatu)
+#    R,G,B=cv2.split(croppedrgb)
+#    mSatu=1-(3/(R+G+B))*(np.min(R),np.min(G),np.min(B))
+#    maximaSaturacionRGB.append(mSatu)
     
     """ DWHTs"""
     tamañoa1A=2**5

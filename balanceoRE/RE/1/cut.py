@@ -28,8 +28,37 @@ def read_boxes(txtfile):
             lines.append(box)
     return np.array(lines)
 
+from skimage import exposure
+import pylab as plt 
+from scipy.signal import find_peaks
+from matplotlib import pyplot as plt
+
+def adaptativeequalization(img):  
+    imR, imG, imB=cv2.split(img) 
+    #Adaptative Equalization
+    clahe=cv2.createCLAHE(2,(8,8))
+    imhaR=clahe.apply(imR)
+    imhaG=clahe.apply(imG)
+    imhaB=clahe.apply(imB)
+
+    imha=cv2.merge((imhaR,imhaG,imhaB))
+    
+    return imha
 for image in glob.glob('*.jpg'):    
+    
     im = cv2.imread(image)
+    im = cv2.normalize(im, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+    im=adaptativeequalization(im)
+    R,G,B=cv2.split(im)    
+    original=G.copy()
+    original=cv2.resize(original,(600,500))
+    cv2.imshow('G',original)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+    plt.hist(G.ravel(),256,[0,256])
+    plt.show()
+    
     filetxt=image[0:len(image)-3]+'txt'
 #    f=open(datafolder/filetxt)
 #          

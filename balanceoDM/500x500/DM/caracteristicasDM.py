@@ -28,6 +28,7 @@ import pylab as py
 
 import sys
 sys.path.insert(1,'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/funciones')
+from brilloContraste import contraste, brillo
 from yolovoc import yolo2voc
 from readboxes import read_boxes
 from rOI import ROI
@@ -272,22 +273,40 @@ betanor=[]
 Diferencianor=[]
 errorCuadraticonor=[]
 sSIMnor=[]
+
+
+brilloop2= []
+brillomedia = []
+contras = []
+brillomediana=[]
+
+i=0
 import matplotlib.pyplot as plt
+from skimage import exposure
+def contraststretching(img):
+    #contrast Stretching
+    p2, p98 = np.percentile(img, (2, 98))
+    img_rescale = exposure.rescale_intensity(img, in_range=(p2, p98))
+    return img_rescale
 
 for imgfile in glob.glob("*.jpg"):
     im = cv2.imread(imgfile)
     aa,bb,c = im.shape    
     croppedrgb=im
     im=cv2.normalize(im, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+    im=contraststretching(im)
     croppedrgb=im.copy()
+   
     HSV=cv2.cvtColor(im,cv2.COLOR_RGB2HSV)
+#    croppedrgb=HSV.copy()
     H,S,cropped=cv2.split(HSV)
+#    R,G,cropped=cv2.split(im)
 #    plt.imshow(cropped,'Greys')
 #    plt.show()
     """TF"""
     cropFou=Fourier(cropped)
-    g,contraste,energia,homogeneidad, correlacion, disimi, ASM,entropia=GLCM(cropFou)
-    contrastTF.append(contraste)
+    g,contrastel,energia,homogeneidad, correlacion, disimi, ASM,entropia=GLCM(cropFou)
+    contrastTF.append(contrastel)
     energiTF.append(energia)
     homogeneiTF.append(homogeneidad)
     correlaciTF.append(correlacion)
@@ -365,7 +384,9 @@ for imgfile in glob.glob("*.jpg"):
     else:
         betadm=sum(T[0:TT])/sum(T)
     beta.append(betadm)
+    
     sumas.append(sum(T))
+    
     media.append(np.mean(T))
     mediana.append(np.median(T))
     destan.append(np.std(T))
@@ -378,7 +399,9 @@ for imgfile in glob.glob("*.jpg"):
     gradiente=HOP(croppedrgb)
     TT=gradiente.tolist() 
     uu=np.max(TT)
-    sumasHOP.append(sum(gradiente))
+    suma=np.asarray(TT)
+    suma=suma.flatten()
+    sumasHOP.append(sum(suma))
     mediaHOP.append(np.mean(gradiente))
     medianaHOP.append(np.median(gradiente))
     destanHOP.append(np.std(gradiente))
@@ -448,20 +471,40 @@ for imgfile in glob.glob("*.jpg"):
     
 
     """ DWHTs"""
-    tamañoa1A=2**5
-    tamañoa1B=2**5
+    if aa>bb:
+        poten=math.log(aa,2)
+        poten=int(poten)
+    else:
+        poten=math.log(bb,2)
+        poten=int(poten)
+    tamañoa1A=2**poten
+    tamañoa1B=2**poten
+    
     HN=hadamard(tamañoa1A, dtype=complex).real
     HT=np.transpose(HN)
+    
+    
     aaa = cv2.resize(cropped,( tamañoa1A, tamañoa1B))
-    WHT=HN*aaa
-    bbb = cv2.GaussianBlur(aaa,(5,5),2.5)
-    WHTr=HT*bbb
+    WHT=HN*aaa*HT
+    
+    
+#    bbb = cv2.GaussianBlur(aaa,(5,5),2.5)
+    bbb=median(aaa, disk(20))
+    WHTr=HT*bbb*HT
+    
+#    plt.imshow(WHT,'Greys')
+#    plt.show()
+#    plt.imshow(WHTr,'Greys')
+#    plt.show()
+    
     p1=0.76
     beta1W,difW=L2norm2images(tamañoa1A,tamañoa1B,p1,WHTr,WHT)
     betaDWHT.append(beta1W)
     DiferenciaDWHT.append(difW)    
     errorCuadraticoDWHT.append(mse(WHTr,WHT))
     sSIMDWHT.append(ssim(WHTr,WHT))
+    
+    
     """ sin DWTs"""
     aa4=cropped.copy()
 #    bb = cv2.GaussianBlur(aa,(5,5),2.5)
@@ -472,7 +515,17 @@ for imgfile in glob.glob("*.jpg"):
     errorCuadraticonor.append(mse(bb4,aa4))
     sSIMnor.append(ssim(bb4,aa4))
     
-#%%
+    """ brillos"""
+    R,G,B=cv2.split(croppedrgb)
+    brillon=np.sqrt(0.241*R**2+0.691*G**2+0.068*B**2)/(aa*bb)
+    brillomedia.append(np.mean(brillon))
+    brillomediana.append(np.median(brillon))
+    contras.append(contraste(cropped))
+    print(brillo(cropped))
+    
+    i=i+1
+    print('IMAGEN',i)
+
 import pandas as pd    
 datos = {'ContrasteTF':contrastTF,
          'Energia':energiTF,
@@ -579,8 +632,13 @@ datos = {'ContrasteTF':contrastTF,
          'DiferenciaN':Diferencianor,
          'errorCuadraticoN':errorCuadraticonor,
          'sSIMN':sSIMnor,
-         }
+         'brillomedia':brillomedia,
+         'contras':contras,
+         'brillomediana':brillomediana}
 
 datos = pd.DataFrame(datos)
 #datos.to_excel('GLCMRES.xlsx') 
-datos.to_excel('Caracateristicas_DM_300x300.xlsx') 
+#datos.to_excel('Caracateristicas_DM_RG(B)_300x300.xlsx') 
+#datos.to_excel('Caracateristicas_DM_((H)SV)_300x300.xlsx') 
+#datos.to_excel('Caracateristicas_DM_Estiramiento_H(S)V_300x300.xlsx') 
+datos.to_excel('Caracateristicas_DM_Estiramiento_HS(V)_300x300.xlsx') 

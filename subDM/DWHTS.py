@@ -58,9 +58,9 @@ import matplotlib.pyplot as plt
 import seaborn as sb
 from sklearn.cluster import KMeans
 from sklearn.metrics import pairwise_distances_argmin_min
-from mpl_toolkits.mplot3d import Axes3D
-plt.rcParams['figure.figsize'] = (16, 9)
-plt.style.use('ggplot')
+#from mpl_toolkits.mplot3d import Axes3D
+#plt.rcParams['figure.figsize'] = (16, 9)
+#plt.style.use('ggplot')
 
 #%%
 
@@ -68,21 +68,21 @@ for imgfile in glob.glob("*.jpg"):
 #    imgfile='00070_batch2.jpg'
 #    imgfile='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/lena.jpg'
 #    imgfile='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subRE/00201_batch2.jpg'
-#    imgfile='00079.jpg'
+    imgfile='00079.jpg'
 #    imgfile='CT56_colitis_06697.jpg'
-    imgfile='00318.jpg'
+#    imgfile='00318.jpg'
 #    imgfile='00054.jpg'
 #    imgfile='0000592.jpg'
     img=cv2.imread(imgfile)   
     img = cv2.normalize(img, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
-    plt.imshow(img)
-    plt.show()
+#    plt.imshow(img)
+#    plt.show()
     imaROI=ROI(img)
     imaROI = cv2.normalize(imaROI, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
     for z in range(3):
         img[:,:,z]=img[:,:,z]*imaROI
-    plt.imshow(img)
-    plt.show()
+#    plt.imshow(img)
+#    plt.show()
     _,contours,_= cv2.findContours(imaROI,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     areas = [cv2.contourArea(c) for c in contours]
     max_index = np.argmax(areas)
@@ -105,24 +105,24 @@ for imgfile in glob.glob("*.jpg"):
     
     tama=2**poten
     aa = cv2.resize(V,(int(tama),int(tama)))
-    plt.imshow(aa,'Greys')
-    plt.show()
+#    plt.imshow(aa,'Greys')
+#    plt.show()
     HN=hadamard(tama, dtype=complex).real
     HT=np.transpose(HN)
     WHT=HN*aa*HT
 #    WH=np.dot(HN,a)
 #    WHT=np.dot(WH,HT)
-    plt.imshow(WHT,'Greys')
-    plt.show()
+#    plt.imshow(WHT,'Greys')
+#    plt.show()
     
     bb = cv2.GaussianBlur(aa,(5,5),2.5)
 #    b=median(a, disk(30))
-    plt.imshow(bb,'Greys')
-    plt.show()
+#    plt.imshow(bb,'Greys')
+#    plt.show()
 #    b=median(a, disk(20))
     WHTr=HT*bb*HT
-    plt.imshow(WHTr,'Greys')
-    plt.show()
+#    plt.imshow(WHTr,'Greys')
+#    plt.show()
     
     su=0
     sur=0
@@ -188,43 +188,43 @@ for imgfile in glob.glob("*.jpg"):
 #    plt.imshow(mbeta)
 #    plt.show()
 #%%
-    tamañoa1A=2**7
-    tamañoa1B=2**7
-    filetxt=imgfile[0:len(imgfile)-3]+'txt'
-#    f=open(datafolder/filetxt)
-#          
-#    bboxfile=f.read()
-    boxes = read_boxes(filetxt)
-    
-    boxes_abs = yolo2voc(boxes, img.shape)  
-    for b in boxes_abs:
-            cls, x1, y1, x2, y2 = b
-            if cls == 3:
-                cropped=V[int(y2):int(y2+40),int(x2):int(x2+40)]
-                aa = cv2.resize(cropped,( tamañoa1A, tamañoa1B))
-    #            plt.imshow(a,'Greys')
-    #            plt.show()
-                HN=hadamard(tamañoa1A, dtype=complex).real
-                HT=np.transpose(HN)
-                WHT=HN*aa*HT
-#                bb = cv2.GaussianBlur(aa,(5,5),2.5)
-                bb=median(aa, disk(30))
-                WHTr=HT*bb*HT
-    #            plt.imshow(WHTr,'Greys')
-    #            plt.show()
-                su=0
-                sur=0
-                for f in range(tamañoa1A):
-                    for c in range(tamañoa1A):
-                        sur=abs(WHTr[f,c]**2)+sur
-                        su=abs(WHT[f,c]**2)+su
-                sur=np.sqrt(sur)
-                su=np.sqrt(su)
-                
-                print(sur/su)
-                print(sur-su)
-                cv2.rectangle(img,(int(x1),int(y1)),(int(x1)+int(x2),int(y1)+int(y2)),(255,0,0),2)
-                cv2.imshow('image',img)
+#    tamañoa1A=2**7
+#    tamañoa1B=2**7
+#    filetxt=imgfile[0:len(imgfile)-3]+'txt'
+##    f=open(datafolder/filetxt)
+##          
+##    bboxfile=f.read()
+#    boxes = read_boxes(filetxt)
+#    
+#    boxes_abs = yolo2voc(boxes, img.shape)  
+#    for b in boxes_abs:
+#            cls, x1, y1, x2, y2 = b
+#            if cls == 3:
+#                cropped=V[int(y2):int(y2+40),int(x2):int(x2+40)]
+#                aa = cv2.resize(cropped,( tamañoa1A, tamañoa1B))
+#    #            plt.imshow(a,'Greys')
+#    #            plt.show()
+#                HN=hadamard(tamañoa1A, dtype=complex).real
+#                HT=np.transpose(HN)
+#                WHT=HN*aa*HT
+##                bb = cv2.GaussianBlur(aa,(5,5),2.5)
+#                bb=median(aa, disk(30))
+#                WHTr=HT*bb*HT
+#    #            plt.imshow(WHTr,'Greys')
+#    #            plt.show()
+#                su=0
+#                sur=0
+#                for f in range(tamañoa1A):
+#                    for c in range(tamañoa1A):
+#                        sur=abs(WHTr[f,c]**2)+sur
+#                        su=abs(WHT[f,c]**2)+su
+#                sur=np.sqrt(sur)
+#                su=np.sqrt(su)
+#                
+#                print(sur/su)
+#                print(sur-su)
+#                cv2.rectangle(img,(int(x1),int(y1)),(int(x1)+int(x2),int(y1)+int(y2)),(255,0,0),2)
+#                cv2.imshow('image',img)
                 
 #%%  
     import matplotlib.patches as patches            
@@ -313,68 +313,24 @@ import pandas as pd
 import random as rd
 from collections import defaultdict
 import matplotlib.cm as cm
- 
-X=np.zeros((len(diferencia),2))
-X[:,0]=diferencia
-X[:,1]=error
-m=X.shape[0]
-n_iter=100
 
-#%%
-from Kmeans import Kmeans
-f,axarr=plt.subplots(5,2,figsize=(15,30))
-i=0
-j=0
-#WCSS_array=np.array([])
-#for K in range(1,11):
-#    kmeans=Kmeans(X,K)
-#    kmeans.fit(n_iter)
-#    Output,Centroids=kmeans.predict()
-#    wcss=0
-#    for k in range(K):
-#        wcss+=np.sum((Output[k+1]-Centroids[k,:])**2)
-#    WCSS_array=np.append(WCSS_array,wcss)
-#    for k in range(K):
-#        axarr[i,j].scatter(Output[k+1][:,0],Output[k+1][:,1])
-#    axarr[i,j].scatter(Centroids[:,0],Centroids[:,1],s=300,c='yellow',label='Centroids')
-#    axarr[i,j].set_title('Clustered data with '+str(K)+' clusters')
-#    if(K%2==1):
-#        j+=1
-#    else:
-#        j=0
-#        i+=1
-#for ax in axarr.flat:
-#    ax.set(xlabel='Income', ylabel='Number of transactions')
-#    
-#    #WCSS_array=np.append(WCSS_array,kmeans.WCSS())
-#    
-#K_array=np.arange(1,11,1)
-#plt.plot(K_array,WCSS_array)
-#plt.xlabel('Number of Clusters')
-#plt.ylabel('within-cluster sums of squares (WCSS)')
-#plt.title('Elbow method to determine optimum number of clusters')
-#plt.show()
-#%%
-K=2
+X=np.array(list(zip(diferencia,error)))
 
+kmeans=KMeans(n_clusters=2)
+kmeans=kmeans.fit(X)
+labels=kmeans.predict(X)
+centroids=kmeans.cluster_centers_
 
+colors=["m.","r.",".c","y.","b."]
+for i in range(len(X)):
+    print('Coordenada: ',X[i],'Etiqueta: ',labels[i])
+    plt.plot(X[i][0],X[i][1],colors[labels[i]],markersize=10)
 
-kmeans=Kmeans(X,K)
-kmeans.fit(n_iter)
-Output,Centroids=kmeans.predict()
-
-color=['red','blue']
-labels=['cluster1','cluster2']
-for k in range(K):
-    plt.scatter(Output[k+1][:,0],Output[k+1][:,1],c=color[k],label=labels[k])
-    print(k)
-    
-plt.scatter(Centroids[:,0],Centroids[:,1],s=600,c='yellow',label='Centroids')
-plt.xlabel('Income')
-plt.ylabel('Number of transactions')
-plt.legend()
+plt.scatter(centroids[:,0],centroids[:,1],marker='*',s=150,linewidths=5,zorder=10)
 plt.show()
 
+plt.imshow(img)
+plt.show()
 
 
     
