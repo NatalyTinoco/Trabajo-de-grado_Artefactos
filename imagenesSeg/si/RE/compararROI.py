@@ -38,6 +38,8 @@ mSSIM=[],[],[],[],[],[],[],[],[]
 mMSE=[],[],[],[],[],[],[],[],[]
 mDICE2=[],[],[],[],[],[],[],[],[]
 fileTT=[]
+imo=[]
+imosi=[]
 i=0
 
 workbook = xlrd.open_workbook("segentadasSI.xlsx")
@@ -50,18 +52,28 @@ for col in range(xl_sheet.ncols):
         ttfile=ttfile+'tif'
         fileTT.append(ttfile)
 
-for image in glob.glob('*.tif'):    
+#for col in range(xl_sheet.ncols):
+#    ttfile = xl_sheet.cell_value(0, col)
+#    if ttfile != '':
+#        ttfile=ttfile+'tif'
+#        if ttfile not in imo:
+#            print(ttfile)
+#        fileTT.append(ttfile)
+
+for image in glob.glob('*.tif'): 
     if image not in fileTT:
+        print(image)
+        image = '00103.tif'
         original = cv2.imread(image,0)
         image2 = image.split(".")
         segventanas=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/segmentacionSthele_CanalG_ventanas/RE/'+image2[0]+'.jpg',0)
         segtoda=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/segmentacionSthele_CanalG_ConEcuAdaptativa/RE/'+image2[0]+'.jpg',0)
         segumbral=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/segmentacionRE_Articulo/RE/'+image2[0]+'.jpg',0)
-        segventanas_2=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos\subData/segmentacionSthele_CanalG_ventanas/RE_2/'+image2[0]+'.jpg',0)
-        segventanas_3=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos\subData/segmentacionSthele_CanalG_ventanas/RE_3/'+image2[0]+'.jpg',0)
-        segventanas_4=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos\subData/segmentacionSthele_CanalG_ventanas/RE_4/'+image2[0]+'.jpg',0)
-        segventanas_5=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos\subData/segmentacionSthele_CanalG_ventanas/RE_5/'+image2[0]+'.jpg',0)
-        segventanas_6=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos\subData/segmentacionSthele_CanalG_ventanas/RE_6/'+image2[0]+'.jpg',0)
+        segventanas_2=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/segmentacionSthele_CanalG_ventanas/RE_2/'+image2[0]+'.jpg',0)
+        segventanas_3=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/segmentacionSthele_CanalG_ventanas/RE_3/'+image2[0]+'.jpg',0)
+        segventanas_4=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/segmentacionSthele_CanalG_ventanas/RE_4/'+image2[0]+'.jpg',0)
+        segventanas_5=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/segmentacionSthele_CanalG_ventanas/RE_5/'+image2[0]+'.jpg',0)
+        segventanas_6=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/segmentacionSthele_CanalG_ventanas/RE_6/'+image2[0]+'.jpg',0)
         print(ssim(original, original))
         print(mse(original, original))
         print('dice2',dice(original, original))
@@ -71,7 +83,7 @@ for image in glob.glob('*.tif'):
             mMSE[h].append(mse(original, tabla[h]))  
             mDICE2[h].append(dice(original, tabla[h]))          
         i=i+1
-
+#%%
 import pandas as pd    
 datos = {'SSIM_Original':mSSIM[0],
          'MSE_Original':mMSE[0],
@@ -101,4 +113,4 @@ datos = {'SSIM_Original':mSSIM[0],
          'MSE_ImgVen6':mMSE[8],
          'DICE_ImgVen6':mDICE2[8]}
 datos = pd.DataFrame(datos)
-datos.to_excel('medidasSimilitudBBOX.xlsx') 
+datos.to_excel('medidasSimilitudCompl.xlsx') 
