@@ -67,25 +67,24 @@ def mse(imageA, imageB):
 	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
 	err /= float(imageA.shape[0] * imageA.shape[1])
 	return err    
-#%%
 
-for imgfile in glob.glob("*.jpg"):
-#%%    
+for imgfile in glob.glob("*.jpg"):   
 #    imgfile='00070_batch2.jpg'
 #    imgfile='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/lena.jpg'
 #    imgfile='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subRE/00201_batch2.jpg'
 #    imgfile='00079.jpg'
 #    imgfile='CT56_colitis_06697.jpg'
-    imgfile='Flu_00461.jpg'
+#    imgfile='Flu_00461.jpg'
 #    imgfile='00318.jpg'
 #    imgfile='00054.jpg'
 #    imgfile='0000592.jpg'
-    img=cv2.imread(imgfile)   
+    img=cv2.imread(imgfile) 
+    imaROI=ROI(img)
     img = cv2.normalize(img, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
     taimg=img.copy()
-    plt.imshow(img)
-    plt.show()
-    imaROI=ROI(img)
+#    plt.imshow(img)
+#    plt.show()
+   
     imaROI = cv2.normalize(imaROI, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
     for z in range(3):
         img[:,:,z]=img[:,:,z]*imaROI
@@ -142,17 +141,14 @@ for imgfile in glob.glob("*.jpg"):
     for fa1 in range(0,a-tamañoa1A,tamañoa1A):
        for ca1 in range(0,b-tamañoa1B,tamañoa1B):       
             croppeda1=ventaneoo(tamañoa1A, tamañoa1B,a,b,fa1,ca1, V)
-            aa = cv2.resize(croppeda1,( tamañoa1A, tamañoa1B))
-#            plt.imshow(a,'Greys')
+#            plt.imshow(croppeda1,'Greys')
 #            plt.show()
+            aa = cv2.resize(croppeda1,( tamañoa1A, tamañoa1B))
             HN=hadamard(tamañoa1A, dtype=complex).real
             HT=np.transpose(HN)
             WHT=HN*aa*HT
             bb = cv2.GaussianBlur(aa,(5,5),2.5)
-#            bb=median(aa, disk(30))
             WHTr=HT*bb*HT
-#            plt.imshow(WHTr,'Greys')
-#            plt.show()
             su=0
             sur=0
             for f in range(tamañoa1A):
@@ -165,27 +161,24 @@ for imgfile in glob.glob("*.jpg"):
             diferencia.append(su-sur)
             error.append(mse(WHTr,WHT))
             mSSIM.append(ssim(WHTr,WHT))
-            print('beta',sur/su)
-            print('diferencia',su-sur) 
+#            print('beta',sur/su)
+#            print('diferencia',su-sur) 
             ii=ii+1
-            print(ii)
+#            print(ii)
 
-#%%
-    X=np.array(list(zip(diferencia,error)))
+    X=np.array(list(zip(diferencia,mSSIM)))
     
     kmeans=KMeans(n_clusters=2)
     kmeans=kmeans.fit(X)
     labels=kmeans.predict(X)
     centroids=kmeans.cluster_centers_
-    
-    colors=["m.","r.",".c","y.","b."]
-    for i in range(len(X)):
-        print('Coordenada: ',X[i],'Etiqueta: ',labels[i])
-        plt.plot(X[i][0],X[i][1],colors[labels[i]],markersize=10)
-    
-    plt.scatter(centroids[:,0],centroids[:,1],marker='*',s=150,linewidths=5,zorder=10)
-    plt.show()
-    
+#    colors=["m.","r.",".c","y.","b."]
+#    for i in range(len(X)):
+#        print('Coordenada: ',X[i],'Etiqueta: ',labels[i])
+#        plt.plot(X[i][0],X[i][1],colors[labels[i]],markersize=10)
+#    plt.scatter(centroids[:,0],centroids[:,1],marker='*',s=150,linewidths=5,zorder=10)
+#    plt.show()
+    labels2=labels.copy()
     Binary=S.copy()
     o=0
     for fa1 in range(0,a-tamañoa1A,tamañoa1A):
@@ -203,32 +196,47 @@ for imgfile in glob.glob("*.jpg"):
 #                       else:
 #                           binary[ff,cc]=255
 #                           print('BLANCO')
-            Binary[fa1:fa1+tamañoa1A,ca1:ca1+tamañoa1B]=labels[o]
+            Binary[fa1:fa1+tamañoa1A,ca1:ca1+tamañoa1B]=labels2[o]
             if ca1+tamañoa1B==tamañoa1B*vecesB-tamañoa1B:
                if fa1+tamañoa1A==tamañoa1A*vecesA-tamañoa1A:
                      croppeda1= V[fa1:a,ca1:b]
                      ta1,ta2=croppeda1.shape
-                     Binary[fa1:a,ca1:b]=labels[o]
+                     Binary[fa1:a,ca1:b]=labels2[o]
                else:
                       croppeda1 = V[fa1:fa1+tamañoa1A,ca1:]
-                      Binary[fa1:fa1+tamañoa1A,ca1:]=labels[o]
+                      Binary[fa1:fa1+tamañoa1A,ca1:]=labels2[o]
             if fa1+tamañoa1A==tamañoa1A*vecesA-tamañoa1A:
 #                 print('ola')
                  if ca1+tamañoa1B==tamañoa1B*vecesB-tamañoa1B:
 #                     print(fa1)
                      croppeda1 = V[fa1:a,ca1:b]
-                     Binary[fa1:a,ca1:b]=labels[o]
+                     Binary[fa1:a,ca1:b]=labels2[o]
                      
                  else:
                      croppeda1 = V[fa1:,ca1:ca1+tamañoa1B] 
-                     Binary[fa1:,ca1:ca1+tamañoa1B]=labels[o]
+                     Binary[fa1:,ca1:ca1+tamañoa1B]=labels2[o]
             o=o+1
-            print('VALOR O', o)
+#            print('VALOR O', o)
     fila,Col,cha=taimg.shape
     Binaryfinal=np.zeros((fila,Col)).astype(np.uint8)
-    Binaryfinal[y:y+h,x:x+w]=Binary*255
-    #%%
-    cv2.imshow('image',Binaryfinal)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    for hh in range(Binary.shape[0]):
+        for hc in range(Binary.shape[1]):
+            if Binary[hh,hc]==0:
+                Binary[hh,hc]=1
+            else:
+                Binary[hh,hc]=0
+    
+    if Binary.shape==Binaryfinal.shape:
+        Binaryfinal=Binary
+    else:
+       Binaryfinal[y:y+h,x:x+w]=Binary 
+    Binaryfinal=Binaryfinal*imaROI 
+    Binaryfinal=Binaryfinal*255
+    dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subDM/umb_DM_DWHTS/'+imgfile
+    cv2.imwrite(dire,Binaryfinal)
+
+#    Binaryfinal= cv2.normalize(Binaryfinal, None, 255, 0, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+#    cv2.imshow('image',Binaryfinal)
+#    cv2.waitKey(0)
+#    cv2.destroyAllWindows()
     

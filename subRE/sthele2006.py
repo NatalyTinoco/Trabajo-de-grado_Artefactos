@@ -36,28 +36,28 @@ def find_nearest(array,value):
     return array[idx]
 
 for imgfile in glob.glob("*.jpg"):
-    
-#    imgfile='00026_batch2.jpg'
+#    imgfile='Lap_00000.jpg'
     img=cv2.imread(imgfile)  
-#    original=img.copy()
-#    original=cv2.resize(original,(600,500))
-#    cv2.imshow('Original',original)
-#    cv2.waitKey(0)
-#    cv2.destroyAllWindows()
-    
+    imaROI=ROI(img)
     img = cv2.normalize(img, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
     img=adaptativeequalization(img)    
-    
-    imaROI=ROI(img)
-    imaROI = cv2.normalize(imaROI, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+#    cv2.imshow('G',img)
+#    cv2.waitKey(0)
+#    cv2.destroyAllWindows()
+    imaROI = cv2.normalize(imaROI, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
     for z in range(3):
         img[:,:,z]=img[:,:,z]*imaROI
-
+        
+    cv2.imshow('G',imaROI)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
     _,contours,_= cv2.findContours(imaROI,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     areas = [cv2.contourArea(c) for c in contours]
     max_index = np.argmax(areas)
     cnt=contours[max_index]
     x3,y3,w3,h3 = cv2.boundingRect(cnt)
+    
     R,G,B=cv2.split(img)    
     V=G[y3:y3+h3,x3:x3+w3]
     

@@ -27,13 +27,13 @@ for image in glob.glob('*.jpg'):
     # image = '00002.jpg'
     im = cv2.imread(image)
     aa,bb,c = im.shape    
-    imaROI=ROI(im)
-    imaROI=cv2.normalize(imaROI, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
-   
-    #cv2.imshow('Grays',imaROI)
-    #cv2.destroyAllWindows()
-    for z in range(c):
-        im[:,:,z]=im[:,:,z]*imaROI
+#    imaROI=ROI(im)
+#    imaROI=cv2.normalize(imaROI, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+#   
+#    #cv2.imshow('Grays',imaROI)
+#    #cv2.destroyAllWindows()
+#    for z in range(c):
+#        im[:,:,z]=im[:,:,z]*imaROI
         
 #    _,contours,_= cv2.findContours(imaROI,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 #    areas = [cv2.contourArea(c) for c in contours]
@@ -88,7 +88,8 @@ for image in glob.glob('*.jpg'):
     for fa1 in range(0,a-tamañoa1A,tamañoa1A):
        for ca1 in range(0,b-tamañoa1B,tamañoa1B):
             croppeda1=ventaneoo(tamañoa1A, tamañoa1B,a,b,fa1,ca1, im)
-            dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/balanceoDM/500x500/DM/4/'+image[0:len(image)-3]+'-'+str(rea1)+'.jpg'
+#            dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/balanceoDM/500x500/DM/4/'+image[0:len(image)-3]+'-'+str(rea1)+'.jpg'
+            dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/balanceoDM/bbox2/300x300/'+image[0:len(image)-3]+'-'+str(rea1)+'.jpg'
             cv2.imwrite(dire,croppeda1)
             rea1=rea1+1
 #        print(image)

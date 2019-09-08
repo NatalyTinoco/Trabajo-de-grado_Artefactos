@@ -38,7 +38,7 @@ def contraststretching(img):
 def find_nearest(array,value): 
     idx = (np.abs(array-value)).argmin()
     return array[idx]
-
+umbrals=[]
 for imgfile in glob.glob("*.jpg"):
         
     img=cv2.imread(imgfile)   
@@ -81,10 +81,10 @@ for imgfile in glob.glob("*.jpg"):
     
     #hist=np.transpose(hist) 
 #    hist=hist.tolist() 
-    plt.plot(hist)
-    
-    plt.show()
-    #peaks,_ = find_peaks(zz)
+#    plt.plot(hist)
+#    
+#    plt.show()
+#    #peaks,_ = find_peaks(zz)
     #plt.plot(peaks, hist[peaks], "x")
     gradiente=np.gradient(zz[200:])
 #    gradiente=np.gradient(zz)
@@ -98,56 +98,62 @@ for imgfile in glob.glob("*.jpg"):
     umbral=200+umbral1
     #umbral=umbral1
     print(umbral)
-    ta1,ta2=V.shape
-    Binary=V.copy()
-    for ff in range(ta1):
-           for cc in range (ta2):
-               if V[ff,cc]<umbral:
-                   #if s[f,c]<h[f,c]:
-                   Binary[ff,cc]=0
-               else:
-                   Binary[ff,cc]=255
-    
-    fila,Col=G.shape
-    Binaryfinal=np.zeros((fila,Col)).astype(np.uint8)
-    Binaryfinal[y3:y3+h3,x3:x3+w3]=Binary   
-    
-#    cv2.imshow('image',V)
-#    cv2.waitKey(0)
-#    cv2.imshow('image',Binaryfinal)
-#    cv2.waitKey(0)
-#    cv2.destroyAllWindows()
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2))
-    dilatacion = cv2.dilate( Binaryfinal,kernel,iterations = 1)
+    umbrals.append(umbral)
+import pandas as pd
+datos={'umbral':umbrals}
+datos=pd.DataFrame(datos)
+datos.to_excel('rangsosthele.xlsx')
 
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-    close=cv2.morphologyEx(dilatacion, cv2.MORPH_CLOSE, kernel)
-    
-    filetxt=imgfile[0:len(imgfile)-3]+'txt'      
-    bboxfile=filetxt
-    boxes = read_boxes(bboxfile)
-    boxes_abs = yolo2voc(boxes, img.shape)  
-    re=0
-    dm=0
-#    cv2.imshow('image',close)
-#    cv2.waitKey(0)
-#    cv2.destroyAllWindows()
+#    ta1,ta2=V.shape
+#    Binary=V.copy()
+#    for ff in range(ta1):
+#           for cc in range (ta2):
+#               if V[ff,cc]<umbral:
+#                   #if s[f,c]<h[f,c]:
+#                   Binary[ff,cc]=0
+#               else:
+#                   Binary[ff,cc]=255
 #    
-    for b in boxes_abs:
-        cls, x1, y1, x2, y2 = b
-        if cls == 3:
-            dm=dm+1
-        if cls==0:
-            re=re+1
-            
-    if dm>0 and re==0:
-        dire='./segmentacionSthele_CanalG_ConEcuAdaptativa/DM/'+imgfile
-        cv2.imwrite(dire,close)
-        print('dm')
-    else:
-        direM='./segmentacionSthele_CanalG_ConEcuAdaptativa/RE/'+imgfile
-        cv2.imwrite(direM,close)
-        print('re')
+#    fila,Col=G.shape
+#    Binaryfinal=np.zeros((fila,Col)).astype(np.uint8)
+#    Binaryfinal[y3:y3+h3,x3:x3+w3]=Binary   
+#    
+##    cv2.imshow('image',V)
+##    cv2.waitKey(0)
+##    cv2.imshow('image',Binaryfinal)
+##    cv2.waitKey(0)
+##    cv2.destroyAllWindows()
+#    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2))
+#    dilatacion = cv2.dilate( Binaryfinal,kernel,iterations = 1)
+#
+#    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+#    close=cv2.morphologyEx(dilatacion, cv2.MORPH_CLOSE, kernel)
+#    
+#    filetxt=imgfile[0:len(imgfile)-3]+'txt'      
+#    bboxfile=filetxt
+#    boxes = read_boxes(bboxfile)
+#    boxes_abs = yolo2voc(boxes, img.shape)  
+#    re=0
+#    dm=0
+##    cv2.imshow('image',close)
+##    cv2.waitKey(0)
+##    cv2.destroyAllWindows()
+##    
+#    for b in boxes_abs:
+#        cls, x1, y1, x2, y2 = b
+#        if cls == 3:
+#            dm=dm+1
+#        if cls==0:
+#            re=re+1
+#            
+#    if dm>0 and re==0:
+#        dire='./segmentacionSthele_CanalG_ConEcuAdaptativa/DM/'+imgfile
+#        cv2.imwrite(dire,close)
+#        print('dm')
+#    else:
+#        direM='./segmentacionSthele_CanalG_ConEcuAdaptativa/RE/'+imgfile
+#        cv2.imwrite(direM,close)
+#        print('re')
 
 
     

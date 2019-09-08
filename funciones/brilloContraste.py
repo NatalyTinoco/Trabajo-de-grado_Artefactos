@@ -5,7 +5,7 @@ Created on Thu Jul 18 20:07:00 2019
 @author: Nataly
 """
 import numpy as np
-def contraste(img):
+def contrastefra(img):
     im11 = img
     #arreglo = np.array(im11.size)
     #print(im11.size)
@@ -36,9 +36,9 @@ def contraste(img):
     #print("El contraste de la imagen es: ", contraste)
     return contraste
 
-def brillo(img):
+def brillofra(img):
     im10 = img
-    arreglo = np.array(im10.shape)
+    arreglo = im10.shape
     total = arreglo[0] * arreglo[1]
     i = 0
     suma = 0
@@ -49,6 +49,6 @@ def brillo(img):
             j+=1        
         i+=1
     brillo = suma / total    
-    brillo = int(brillo)
+#    brillo = int(brillo)
     #print("El brillo de la imagen es: ", brillo)
 

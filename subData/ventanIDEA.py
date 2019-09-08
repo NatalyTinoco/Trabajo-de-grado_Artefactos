@@ -48,7 +48,7 @@ for imgfile in glob.glob("*.jpg"):
     img = cv2.normalize(img, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
     img=adaptativeequalization(img)
     
-    ima='./segROI/#5/Z3/'+imgfile
+    ima='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subData/segROI/#5/Z3/'+imgfile
     imaROI=cv2.imread(ima,0)
     imaROI = cv2.normalize(imaROI, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
       

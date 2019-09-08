@@ -146,18 +146,17 @@ from scipy.stats import linregress
 for imgfile in glob.glob("*.jpg"):
 #    imgfile='00070_batch2.jpg'
 #    imgfile='00064_batch2.jpg'
-#    imgfile='CT56_colitis_06697.jpg'
+#    imgfile='00272.jpg'
    
-    img=cv2.imread(imgfile)   
+    img=cv2.imread(imgfile)  
+    imaROI=ROI(img)
     img = cv2.normalize(img, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+    imgcop=img.copy()
 #    plt.imshow(img)
 #    plt.show()
-    imaROI=ROI(img)
     imaROI = cv2.normalize(imaROI, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
     for z in range(3):
         img[:,:,z]=img[:,:,z]*imaROI
-#    plt.imshow(img)
-#    plt.show()
               
     _,contours,_= cv2.findContours(imaROI,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     areas = [cv2.contourArea(c) for c in contours]
@@ -168,122 +167,84 @@ for imgfile in glob.glob("*.jpg"):
     HSV=cv2.cvtColor(img,cv2.COLOR_RGB2HSV)
     H,S,V=cv2.split(HSV)
     V=V[y3:y3+h3,x3:x3+w3]
-#    plt.imshow(V,'Greys')
-#    plt.show()
- 
-#    blur_map = get_blur_map(V)
-#    plt.imshow(blur_map,'Greys')
-#    plt.show()
-#      
+
     img_back=DFT(V)
-#    plt.imshow(img_back)
-#    plt.title('Fianl Result'), plt.xticks([]), plt.yticks([])
-#    plt.show()
-#    psd1D = radialProfile.azimuthalAverage(img_back)
     j=azimuthalAverage(img_back)
-#    py.semilogy(j)
-#    py.xlabel('Spatial Frequency')
-#    py.ylabel('Power Spectrum')
-#    py.show()
     xs=np.arange(len(j))
     slope = linregress(xs, j)[0]  # slope in units of y / x
     slope_angle = math.atan(slope)  # slope angle in radians
     alfa0 = math.degrees(slope_angle) 
     
     gradiente=np.gradient(j)
-#    #    gradiente=np.gradient(zz)
-#    plt.plot(gradiente)
-#    plt.show()
-    alfa0ma=np.max(gradiente)
-#    print(alfa0)
-#    gradienterex=gradiente.tolist()
-#    poMaxSlope = gradienterex.index(alfa0)
-##    uu=find_nearest(gradiente,alfa0)
-#    filetxt=imgfile[0:len(imgfile)-3]+'txt'
-##    f=open(datafolder/filetxt)
-##          
-##    bboxfile=f.read()
-#    boxes = read_boxes(filetxt)
-#    
-#    boxes_abs = yolo2voc(boxes, img.shape)  
-#    for b in boxes_abs:
-#            cls, x1, y1, x2, y2 = b
-#            if cls == 3:
-#                cropped=V[int(y1):int(y2),int(x1):int(x2)]
-#                img_backc=DFT(cropped)
-#                jc=azimuthalAverage(img_backc)
-##                 xsc=np.arange(len(jc))
-##                 slopec = linregress(xsc, jc)[0]  # slope in units of y / x
-##                 slope_anglec = math.atan(slopec)  # slope angle in radians
-##                 alfap = math.degrees(slope_anglec) 
-#                gradiente=np.gradient(jc)
-#                plt.plot(gradiente)
-#                plt.show()
-#                alfap=np.max(gradiente)
-#                print('ALFA',alfap)
-                
+    alfa0ma=np.max(gradiente)               
     a,b=V.shape
     tamañoa1A=150
     tamañoa1B=150
     rea1=0
-    Binary=V.copy()
-    for fa1 in range(0,a-tamañoa1A,tamañoa1A):
-       for ca1 in range(0,b-tamañoa1B,tamañoa1B):
+    Binary=S.copy()
+    for fa1 in range(0,a,tamañoa1A):
+       for ca1 in range(0,b,tamañoa1B):
             croppeda1=ventaneoo(tamañoa1A, tamañoa1B,a,b,fa1,ca1, V)
             vecesA = int(a/tamañoa1A)
             vecesB = int(b/tamañoa1B)
-#            plt.imshow(croppeda1,'Greys')
-#            plt.show()
             img_backc=DFT(croppeda1)
             jc=azimuthalAverage(img_backc)
-##            py.semilogy(jc)
-##            py.xlabel('Spatial Frequency')
-##            py.ylabel('Power Spectrum')
-##            py.show()
             gradientec=np.gradient(jc)
-##            plt.plot(gradientec)
-##            plt.show()
             alfapma=np.max(gradientec)
-#            gradienterex=gradientec.tolist()
-#            poMaxSlopep = gradienterex.index(alfap)
             xsc=np.arange(len(jc))
             slopec = linregress(xsc, jc)[0]  # slope in units of y / x
             slope_anglec = math.atan(slopec)  # slope angle in radians
             alfap = math.degrees(slope_anglec) 
             print('ALFA',alfap)
-#            if alfap > alfa0:
             ta1,ta2=croppeda1.shape
-            binary=croppeda1.copy()
-            if alfap > alfa0:
-#            if  poMaxSlopep> poMaxSlope:
+#            plt.imshow(croppeda1)
+#            plt.show()
+            print(fa1,ca1)
+#            binary=croppeda1.copy()
+#            if alfap > alfa0:
+            if  alfapma> alfa0ma:
                 #if s[f,c]<h[f,c]:
-                binary=255
+                binary=1
             else:
                 binary=0
-           # binary = cv2.adaptiveThreshold(cropped, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 15, -22)
-#            
-#            cv2.imshow('image',binary)
-#            cv2.waitKey(0)
-#            cv2.destroyAllWindows()
-            #print(f,c)
-            if ca1<tamañoa1B*vecesB-tamañoa1B and fa1<tamañoa1A*vecesA-tamañoa1A:
-               #print(f,c)
-               Binary[fa1:fa1+tamañoa1A,ca1:ca1+tamañoa1B] = binary
-            if ca1==tamañoa1B*vecesB-tamañoa1B and fa1<tamañoa1A*vecesA-tamañoa1A:
-              # print('paso')
-               Binary[fa1:fa1+tamañoa1A,ca1:]=binary
+            Binary[fa1:fa1+tamañoa1A,ca1:ca1+tamañoa1B]=binary
+            #test2[f:f+tamañoA,c:c+tamañoB]=test[f:f+tamañoA,c:c+tamañoB]
+            if ca1==tamañoa1B*vecesB-tamañoa1B:
+                #cropped = V[f:f+tamañoA,c:]
+                Binary[fa1:fa1+tamañoa1A,ca1:]=binary
+                #test2[f:f+tamañoA,c:]=test[f:f+tamañoA,c:]
             if fa1==tamañoa1A*vecesA-tamañoa1A:
-               if ca1==tamañoa1B*vecesB-tamañoa1B:
-                  Binary[fa1:,ca1:]=binary
+                 if ca1==tamañoa1B*vecesB-tamañoa1B:
+#                    cropped = V[f:,c:]
+                    Binary[fa1:,ca1:]=binary
+                 else:
+                     Binary[fa1:,ca1:ca1+tamañoa1B]=binary
+       
+            if ca1+tamañoa1B==tamañoa1B*vecesB-tamañoa1B:
+               if fa1+tamañoa1A==tamañoa1A*vecesA-tamañoa1A:
+                     Binary[fa1:a,ca1:b]=binary
                else:
-                  Binary[fa1:,ca1:ca1+tamañoa1B]=binary
+                      Binary[fa1:fa1+tamañoa1A,ca1:b]=binary
+            if fa1+tamañoa1A==tamañoa1A*vecesA-tamañoa1A:
+                 print('ola')
+                 if ca1+tamañoa1B==tamañoa1B*vecesB-tamañoa1B:
+
+                     Binary[fa1:a,ca1:b]=binary
+                     
+                 else:
+                     Binary[fa1:b,ca1:ca1+tamañoa1B]=binary
             rea1=rea1+1
-    fila,Col=S.shape
+    fila,Col,shu=imgcop.shape
     Binaryfinal=np.zeros((fila,Col)).astype(np.uint8)
-    Binaryfinal[y3:y3+h3,x3:x3+w3]=Binary   
-    dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subDM/umb_DM_1/'+imgfile
-    cv2.imwrite(dire,Binary)
-#    cv2.imshow('image',Binary)
+    if Binary.shape==Binaryfinal.shape:
+        Binaryfinal=Binary
+    else:
+        Binaryfinal[y3:y3+h3,x3:x3+w3]=Binary   
+    Binaryfinal=Binaryfinal*imaROI
+    Binaryfinal=Binaryfinal*255
+    dire='C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subDM/umb_DM_1.2/'+imgfile
+    cv2.imwrite(dire,Binaryfinal)
+#    cv2.imshow('image',Binaryfinal)
 #    cv2.waitKey(0)
 #    cv2.destroyAllWindows()
 #    

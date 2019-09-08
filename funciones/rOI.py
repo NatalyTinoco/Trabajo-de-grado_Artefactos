@@ -7,8 +7,6 @@ Created on Wed Jul 31 10:22:47 2019
 import cv2
 import numpy as np
 def ROI(ima):
-    
-    
     imA=cv2.cvtColor(ima,cv2.COLOR_RGB2XYZ)
     I,I,II=cv2.split(imA)
     
@@ -16,10 +14,10 @@ def ROI(ima):
     ta=list(ta)
     #plt.imshow(II, cmap=plt.cm.gray)
     #plt.show()        
-    MIN=int(np.min(II))
-    MAX=int(np.max(II))
-  
-    hist = cv2.calcHist([II],[0],None,[MAX+1],[MIN,MAX])
+#    MIN=int(np.min(II))
+#    MAX=int(np.max(II))
+#  
+#    hist = cv2.calcHist([II],[0],None,[MAX+1],[MIN,MAX])
     hist = cv2.calcHist([II],[0],None,[256],[0,255])
     #plt.plot(hist)
     #plt.show()
@@ -87,8 +85,8 @@ def ROI(ima):
     close=cv2.morphologyEx(openi, cv2.MORPH_CLOSE, kernel)
 
     #contours,hierachy = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-    #_,contours,_ = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-    contours,hierarchy = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    _,contours,_ = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+#    contours,hierarchy = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     areas = [cv2.contourArea(c) for c in contours]
     max_index = np.argmax(areas)
     cnt=contours[max_index]
