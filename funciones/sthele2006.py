@@ -19,7 +19,11 @@ def sthele2006(imgfile):
     imaROI=ROI(img)
     img = cv2.normalize(img, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
     img=adaptativeequalization(img)    
+<<<<<<< HEAD
     imaROI = cv2.normalize(imaROI, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+=======
+    imaROI = cv2.normalize(imaROI, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+>>>>>>> c01490c95d56aa6eaa0946d849dfbfba46fe4037
     for z in range(3):
         img[:,:,z]=img[:,:,z]*imaROI
  

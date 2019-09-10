@@ -36,8 +36,12 @@ def find_nearest(array,value):
 
 
 def ventanIDEA(imgfile):   
+<<<<<<< HEAD
 #    img=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/'+imgfile)   
     img=imgfile
+=======
+    img=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/'+imgfile)   
+>>>>>>> c01490c95d56aa6eaa0946d849dfbfba46fe4037
     imaROI=ROI(img)
     img = cv2.normalize(img, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
     img=adaptativeequalization(img)
@@ -46,8 +50,13 @@ def ventanIDEA(imgfile):
     for z in range(3):
         img[:,:,z]=img[:,:,z]*imaROI
         
+<<<<<<< HEAD
     _,contours,_= cv2.findContours(imaROI,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 #    contours,hierarchy = cv2.findContours(imaROI, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+=======
+    #_,contours,_= cv2.findContours(imaROI,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    contours,hierarchy = cv2.findContours(imaROI, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+>>>>>>> c01490c95d56aa6eaa0946d849dfbfba46fe4037
     areas = [cv2.contourArea(c) for c in contours]
     max_index = np.argmax(areas)
     cnt=contours[max_index]

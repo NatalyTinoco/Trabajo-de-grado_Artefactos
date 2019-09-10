@@ -13,6 +13,8 @@ from pandas import DataFrame, read_csv
 import pandas as pd 
 from sklearn.model_selection import train_test_split
 
+
+
 #file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\DM\datos_entrenamiento.xlsx'
 
 #file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\DM\binaria.xlsx'
