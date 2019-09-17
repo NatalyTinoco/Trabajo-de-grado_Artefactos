@@ -4,22 +4,15 @@ Created on Mon Jul 15 23:27:13 2019
 
 @author: Nataly
 """
-<<<<<<< HEAD
-=======
 
->>>>>>> c01490c95d56aa6eaa0946d849dfbfba46fe4037
 import sys
 sys.path.insert(1,'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/funciones')
 
 from skimage.measure import compare_ssim as ssim
-<<<<<<< HEAD
 import cv2
 import xlrd
-=======
 from sklearn.cluster import KMeans
 from sklearn.metrics import pairwise_distances_argmin_min
-import cv2
->>>>>>> c01490c95d56aa6eaa0946d849dfbfba46fe4037
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial import distance
@@ -46,19 +39,15 @@ def dice(im1, im2):
     return Dice    
 import glob
 
-<<<<<<< HEAD
 #similitud=np.zeros((307,16))
 #mSSIM=np.zeros((307,16))
 #mMSE=np.zeros((307,16))
 #mDICE1=np.zeros((307,16))
 #mDICE2=np.zeros((307,16))
-=======
->>>>>>> c01490c95d56aa6eaa0946d849dfbfba46fe4037
 mSSIM=[],[],[],[],[],[],[],[],[]
 mMSE=[],[],[],[],[],[],[],[],[]
 mDICE2=[],[],[],[],[],[],[],[],[]
 fileTT=[]
-<<<<<<< HEAD
 read=[]
 i=0
 
@@ -145,7 +134,6 @@ import pandas as pd
 #         'SSIM_ImgVen6':mSSIM[8],
 #         'MSE_ImgVen6':mMSE[8],
 #         'DICE_ImgVen6':mDICE2[8]}
-=======
 area=[]
 perimetro=[]
 i=0
@@ -251,12 +239,10 @@ for image in glob.glob('*.jpg'):
 #%%
 import pandas as pd    
 
->>>>>>> c01490c95d56aa6eaa0946d849dfbfba46fe4037
 
 datos = {'SSIM_Original':mSSIM[0],
          'MSE_Original':mMSE[0],
          'DICE_Original':mDICE2[0],
-<<<<<<< HEAD
          'SSIM_T1':mSSIM[1],
          'MSE_T1':mMSE[1],
          'DICE_T1':mDICE2[1],
@@ -266,12 +252,9 @@ datos = {'SSIM_Original':mSSIM[0],
          'SSIM_T3':mSSIM[3],
          'MSE_T3':mMSE[3],
          'DICE_T3':mDICE2[3]}
-datos = pd.DataFrame(datos)
-datos.to_excel('medidasSimilitudRE-prepro15.xlsx') 
-=======
-         'SSIM_T3':mSSIM[1],
-         'MSE_T3':mMSE[1],
-         'DICE_T3':mDICE2[1],}
+
 datos = pd.DataFrame(datos)
 datos.to_excel('medidasSimilitudRE-kmeans2.xlsx') 
->>>>>>> c01490c95d56aa6eaa0946d849dfbfba46fe4037
+datos = pd.DataFrame(datos)
+datos.to_excel('medidasSimilitudRE-prepro15.xlsx') 
+
