@@ -12,13 +12,14 @@ import numpy as np
 from pandas import DataFrame, read_csv
 import pandas as pd 
 from sklearn.model_selection import train_test_split
+from sklearn import metrics
 
 #file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\DM\datos_entrenamiento.xlsx'
 
 #file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\DM\binaria.xlsx'
 
-#file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\DM\datos_prueba.xlsx'
-file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\RE\datos_entrenamiento.xlsx'
+file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\DM\datos_prueba.xlsx'
+#file = r'C:\Users\Usuario\Documents\Daniela\Tesis\Trabajo-de-grado_Artefactos\Método de identificación\DM\binaria_2_DM.xlsx'
 #file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\RE\binariasolo2carac.xlsx'
 
 #file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\RE\binaria.xlsx'
@@ -41,9 +42,15 @@ kf = KFold(n_splits=2,shuffle=True,random_state=2)
 #    print(valores_x,valores_y)
 kf = KFold(n_splits=4)
 kf.get_n_splits(X)
-
 print(kf)
+
+rf = RandomForestClassifier(n_estimators=20)
 
 for train_index, test_index in kf.split(X):
     f_train_X, f_valid_X = X.iloc[train_index], X.iloc[test_index]
     f_train_y, f_valid_y = y.iloc[train_index], y.iloc[test_index]
+    rf.fit(f_train_X, f_train_y)
+    y_predictions=rf.predict(f_valid_X)
+    exactitud=metrics.accuracy_score(f_valid_y,y_predictions)
+    metrics.f1_score(f_valid_y,y_predictions)
+    
