@@ -81,4 +81,4 @@ import pandas as pd
 datos = {'Entropia':entrop,
          'sSIMN':SSIMN}   
 datos = pd.DataFrame(datos)
-datos.to_excel('Caracateristicas_DM_Prueba2.xlsx') 
+datos.to_excel('Caracateristicas_DM_PruebAA.xlsx') 
