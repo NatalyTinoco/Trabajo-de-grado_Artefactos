@@ -113,6 +113,7 @@ print('Regresión: ',lr.score(X_test, y_test))
 
 #rbf
 Cc=[0.2,0.5,0.7,1,1.3]
+#Cc=[0.7]
 J=0
 kernels=['rbf','linear','poly','sigmoid']
 for C in Cc: 
@@ -178,7 +179,7 @@ datos = {'Tipo cla': nombre,
 
 datos = pd.DataFrame(datos)
 #datos.to_excel('holdOut_DM_binaria_balanceo2.xlsx') 
-datos.to_excel('holdOut_RE_binaria_balanceo2.xlsx')         
+#datos.to_excel('holdOut_RE_binaria_balanceop2.xlsx')         
 """#%%
 valormaximo=np.max(med)
 pos=med.index(valormaximo)
