@@ -37,15 +37,15 @@ def adaptativeequalization(img):
     
     return imha
 
-def umbralAdapArt(imgfile):
-    img=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/'+imgfile)  
-    imaROI=ROI(img)
-    img = cv2.normalize(img, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
-    img=adaptativeequalization(img)    
+def umbralAdapArt(imaROI,img1):
+#    img=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/'+imgfile)  
+#    imaROI=ROI(img)
+#    img = cv2.normalize(img, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
+#    img=adaptativeequalization(img)    
     
     imaROI = cv2.normalize(imaROI, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
     
-    img1=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/'+imgfile)  
+#    img1=cv2.imread('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subData/'+imgfile)  
     
     #img=cv2.imread(imgfile)
     #img=log(img)

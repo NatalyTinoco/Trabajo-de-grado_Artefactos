@@ -12,9 +12,11 @@ import numpy as np
 from pandas import DataFrame, read_csv
 import pandas as pd 
 from sklearn.model_selection import train_test_split
+import pickle
     
 #file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\UNIÓN DE CARACTERISTICAS\binarioDM_1.xlsx'
-file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\DM\binaria_2_DM.xlsx'
+#file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\RE\binaria_2_RE.xlsx'
+file = r'C:\Users\Usuario\Documents\Daniela\Tesis\Trabajo-de-grado_Artefactos\Método de identificación\RE\binaria_2_RE.xlsx'
 datos= pd.read_excel(file)
 datos=datos.astype(float).fillna(0.0)
 y=datos['Clase']
@@ -70,6 +72,13 @@ y_predictions=rf.predict(X_test)
 #medidas(y_test,y_predictions,'Random forest'+str(ne))
 #print('Random F: ',rf.score(X_test, y_test))
 
+with open('model_pickle','wb') as f:
+    pickle.dump(rf,f)
+    
+with open('model_pickle','rb') as f:
+    mp = pickle.load(f)
+
+#%%
 #file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Prueba\cutparaDM\DM\Caracateristicas_DM_PruebAA.xlsx'
 file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\DM\datos_prueba_TODASLASCLASES.xlsx'
 
