@@ -5,12 +5,10 @@ Created on Tue Aug 27 23:44:12 2019
 @author: Usuario
 """
 import sys
-<<<<<<< HEAD
 sys.path.insert(1,'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/funciones')
 from sthele2006 import sthele2006
-=======
-sys.path.insert(1,'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/funciones')
->>>>>>> c01490c95d56aa6eaa0946d849dfbfba46fe4037
+
+#sys.path.insert(1,'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/funciones')
 
 import cv2
 from skimage.measure import compare_ssim as ssim
