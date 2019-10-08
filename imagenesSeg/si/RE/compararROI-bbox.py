@@ -7,6 +7,8 @@ Created on Tue Aug 27 23:44:12 2019
 import sys
 
 sys.path.insert(1,'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/funciones')
+#sys.path.insert(1,'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/funciones')
+from sthele2006 import sthele2006
 
 #sys.path.insert(1,'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/funciones')
 
