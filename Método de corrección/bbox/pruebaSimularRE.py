@@ -45,7 +45,7 @@ import numpy as np
 import random
 
 #imagen Original (Sin RE)
-file="./SinRE/AN12_96.jpg"
+file="./bbox/SinRE/AN12_96.jpg"
 img=cv2.imread(file)
 imgoriginal=img.copy()
 img_1=img.copy()
@@ -144,4 +144,4 @@ while j <= (numero-1):
 cv2.imshow('RE',simu_f)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-cv2.imwrite('./bbox/corregidas/'+image,simu_f)
+#cv2.imwrite('./bbox/corregidas/'+image,simu_f)
