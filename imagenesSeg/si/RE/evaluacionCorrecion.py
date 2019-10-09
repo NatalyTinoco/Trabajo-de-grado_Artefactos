@@ -25,15 +25,17 @@ nu=18
 for image in glob.glob('*.jpg'):
     file="./bbox/SinRE/"+image
     fileseg="./bbox/segmentaciones/"+image
+    simula="./bbox/simulacion/"+image
     img=cv2.imread(file)
     mask =cv2.imread(fileseg,0)
     mask= cv2.normalize(mask, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)  
     c=0
     for co in corre:
         if co==0:
-            imgcorr=co(img,mask,nu)
+            imgcorr=co(simula,mask,nu)
         else:
-             imgcorr=co(img,mask)
+             imgcorr=co(simula,mask)
+             
         mSSIM[c][i].append(ssim(img,imgcorr))
         mPSNR[c][i].append(psnr(img,imgcorr))
         mMSE[c][i].append(mse(img,imgcorr))  
