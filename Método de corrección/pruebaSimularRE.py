@@ -109,7 +109,8 @@ for pp in range(len(ila)):
     coordenadas[0:numero,0:2]=pos
     j=0
     simu_f=img_1.copy()
-    
+    mask_f=img_1[:,:,1].copy()
+    mask_f[:,:]=0
     while j <= (numero-1):
         p= random.randint(0, len(datos)-1)
         print(datos['nombres'][p])
@@ -118,7 +119,7 @@ for pp in range(len(ila)):
         ho,wo,co=img.shape
         print(ho,wo,co)
         jj=0
-        tamaños=[8,10,14,13,15,17]
+        tamaños=[8,10,14,13,15,17,22,25]
         while jj <= (1):
             pp= random.randint(0, len(tamaños)-1)
             pp2= random.randint(0, len(tamaños)-1)
@@ -130,6 +131,8 @@ for pp in range(len(ila)):
         coordenadas[j,3]=h
         y=coordenadas[j,1]
         x=coordenadas[j,0]
+        
+        mask_f[int(y):int(y+h),int(x):int(x+w)]=mask
         
         mask_img=img_1[int(y):int(y+h),int(x):int(x+w)].copy()
     
@@ -147,6 +150,7 @@ for pp in range(len(ila)):
     #    cv2.waitKey(0)
     #    cv2.destroyAllWindows()
         simu_f[int(y):int(y+h),int(x):int(x+w)]=mask_img+imagen_2
+      
     #    cv2.imshow('RE',simu_f)
     #    cv2.waitKey(0)
     #    cv2.destroyAllWindows()
@@ -160,3 +164,7 @@ for pp in range(len(ila)):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     cv2.imwrite('./bbox/corregidas/'+image,simu_f)
+    mask_f= cv2.normalize(mask_f, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)  
+    cv2.imwrite('./bbox/corregidas/seg_'+image,mask_f)
+    
+       
