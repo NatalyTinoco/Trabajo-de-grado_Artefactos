@@ -15,11 +15,11 @@ from ventanIDEA import ventanIDEA
 from caracRE import caracRe
 from correccion import suavizado,inpaintingB,inpaintingNS,inpaintingTA
 
-imagePath = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subRE/00026_batch2.jpg'
+imagePath = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subDM/00058.jpg'
     
 with open('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle','rb') as f:
-    mp = pickle.load(f)
-
+    mpRE = pickle.load(f)
+    
 original = cv2.imread(imagePath)
 imNorm = normalizacionMaxMin(original)
 imEqu = adaptativeequalization(imNorm)
@@ -33,6 +33,7 @@ for z in range(3):
     imDU[:,:,z]=imDR[:,:,z]*umbrImage
     
 contours,hierachy = cv2.findContours(umbrImage,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+print(str(contours))
 # _,contours,_ = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 
 for c in range(len(contours)):
@@ -46,8 +47,8 @@ for c in range(len(contours)):
     
     brillo,contraste,desvi=caracRe(cropped1)
     carac=pd.DataFrame({'contrastB':contraste,'desviacionB':desvi,'Brillo':brillo},index =['1'])
-    pred=int(mp.predict(carac))
-    
+    pred=int(mpRE.predict(carac))
+    print(pred)
     if pred ==1:
         umbrImage[int(y):int(y+h),int(x):int(x+w)] = umbrImage[int(y):int(y+h),int(x):int(x+w)]
     else:
@@ -60,19 +61,21 @@ correccion1=suavizado(original,umbrImage,15)
 correccion2=inpaintingB(original,umbrImage)
 correccion3=inpaintingNS(original,umbrImage)
 correccion4=inpaintingTA(original,umbrImage)
+    
+   
 
-cv2.imshow('imageres', correccion1)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-cv2.imshow('imageres', correccion2)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-cv2.imshow('imageres', correccion3)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-cv2.imshow('imageres', correccion4)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+#cv2.imshow('imageres', correccion1)
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
+#
+#cv2.imshow('imageres', correccion2)
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
+#
+#cv2.imshow('imageres', correccion3)
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
+#
+#cv2.imshow('imageres', correccion4)
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()

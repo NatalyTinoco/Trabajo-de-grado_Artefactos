@@ -49,7 +49,7 @@ def ROI(ima):
     umbral=umbral+len(hist[:umbral1])
     
     binary=II.copy()
-    print(umbral)
+#    print(umbral)
     for f in range(ta[0]):
         for c in range (ta[1]):
             if II[f,c]<=umbral:
