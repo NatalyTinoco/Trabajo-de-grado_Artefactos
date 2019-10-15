@@ -9,73 +9,46 @@ import pickle
 import pandas as pd
 import matplotlib.pyplot as plt
 from Normalizacion import normalizacionMaxMin
-from equalization import adaptativeequalization
 from rOI import ROI
-from ventanIDEA import ventanIDEA
 from caracDM import carcDM
-from correccion import suavizado,inpaintingB,inpaintingNS,inpaintingTA
+from ventaneo import ventaneoo
 
-imagePath1 = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subDM/00124.jpg'
+#imagePath1 = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subRE/00000.jpg'
     
-with open('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle_DM','rb') as f:
+with open('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/test-todo/model_pickle_DM','rb') as f:
     mpDM = pickle.load(f)
 
-def testDM(imagePath):
-    original = cv2.imread(imagePath)
+def test_all_DM(imagePath1):
+    original = cv2.imread(imagePath1)
     imNorm = normalizacionMaxMin(original)
     imDR = imNorm.copy()
     roiImage = ROI(imNorm)
     for z in range(3):
         imDR[:,:,z]=imNorm[:,:,z]*roiImage
-    imDU = imDR.copy()
-    umbrImage = ventanIDEA(imDR,roiImage)
-    for z in range(3):
-        imDU[:,:,z]=imDR[:,:,z]*umbrImage
         
-    contours,hierachy = cv2.findContours(umbrImage,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-    # _,contours,_ = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    aa,bb,c = imDR.shape
+    a,b,ch = imDR.shape
+    tamañoa1A=300
+    tamañoa1B=300
     
-    for c in range(len(contours)):
-        cnt = contours[c]
-        epsilon = 0.01*cv2.arcLength(cnt,True)
-#        approx = cv2.approxPolyDP(cnt,epsilon,True)
-        x,y,w,h = cv2.boundingRect(cnt)
-        
-        cropped1 = imDU[int(y):int(y+h),int(x):int(x+w)]
-#        cropped2 = imDR[int(y):int(y+h),int(x):int(x+w)]
-        
-        entropia,ssimn=carcDM(cropped1)
-        carac=pd.DataFrame({'entropia':entropia,'ssimn':ssimn},index =['1'])
-        pred=int(mpDM.predict(carac))
-        
-        if pred ==1:
-            umbrImage[int(y):int(y+h),int(x):int(x+w)] = umbrImage[int(y):int(y+h),int(x):int(x+w)]
-        else:
-            umbrImage[int(y):int(y+h),int(x):int(x+w)] = 0
-    #    cv2.imwrite('contorno.jpg',original)
-    #    cv2.imwrite('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/test-todo/'+filePath+'/'+str(c)+'-contorno.jpg',cropped)
+    predictions = []
     
-    
-    correccion1=suavizado(original,umbrImage,15)
-    correccion2=inpaintingB(original,umbrImage)
-    correccion3=inpaintingNS(original,umbrImage)
-    correccion4=inpaintingTA(original,umbrImage)
-    return pred
+    for fa1 in range(0,a-tamañoa1A,tamañoa1A):
+        for ca1 in range(0,b-tamañoa1B,tamañoa1B):
+            croppeda1=ventaneoo(tamañoa1A, tamañoa1B,a,b,fa1,ca1, imDR)
+#            plt.imshow(cv2.cvtColor(croppeda1, cv2.COLOR_BGR2RGB))
+#            plt.show()
+            entropia,ssimn=carcDM(croppeda1)
+            carac=pd.DataFrame({'entropia':entropia,'ssimn':ssimn},index =['1'])
+            pred=int(mpDM.predict(carac))
+            
+            predictions.append(pred)
+            
+    return predictions
 
+#imagePath1 = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subDM/WL_00444.jpg'
+#testing=test_all_DM(imagePath1)       
+#cv2.imshow('imagen0', imacropped[2])
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
 
-testing = testDM(imagePath1)
-#cv2.imshow('imageres', correccion1)
-#cv2.waitKey(0)
-#cv2.destroyAllWindows()
-#
-#cv2.imshow('imageres', correccion2)
-#cv2.waitKey(0)
-#cv2.destroyAllWindows()
-#
-#cv2.imshow('imageres', correccion3)
-#cv2.waitKey(0)
-#cv2.destroyAllWindows()
-#
-#cv2.imshow('imageres', correccion4)
-#cv2.waitKey(0)
-#cv2.destroyAllWindows()

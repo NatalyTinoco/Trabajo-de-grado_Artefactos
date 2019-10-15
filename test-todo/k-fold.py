@@ -6,7 +6,6 @@ Created on Tue Oct  8 22:31:26 2019
 """
 
 from sklearn.ensemble import RandomForestClassifier
-import numpy as np
 from sklearn import metrics
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
