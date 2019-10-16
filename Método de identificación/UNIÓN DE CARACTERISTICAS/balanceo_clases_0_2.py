@@ -7,11 +7,11 @@ Created on Sat Sep 14 11:13:31 2019
 
 import pandas as pd
 import random
-TA=['_1','_2','_3']
-
-for TAB in TA:
-        
-    file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\UNIÓN DE CARACTERISTICAS\RE'+TAB+'.xlsx'
+#TA=['_1','_2','_3']
+#
+#for TAB in TA:
+#        
+#    file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Método de identificación\UNIÓN DE CARACTERISTICAS\RE'+TAB+'.xlsx'
     datos= pd.read_excel(file,sheet_name='Hoja1')
     datos=datos.astype(float).fillna(0.0)
 
