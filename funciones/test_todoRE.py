@@ -17,27 +17,36 @@ from caracRE import caracRe
 
 #imagePath = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subRE/00095.jpg'
     
-with open('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle','rb') as f:
+#with open('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle','rb') as f:
+with open('C:/Users/Nataly/Documents//Trabajo-de-grado_Artefactos/Método de identificación/model_pickle','rb') as f:
     mpRE = pickle.load(f)
    
 def test_all_RE(imagePath):
     original = cv2.imread(imagePath)
+    original_2 =original.copy() 
     imNorm = normalizacionMaxMin(original)
     imEqu = adaptativeequalization(imNorm)
     imDR = imEqu.copy()
     roiImage = ROI(imEqu)
     for z in range(3):
         imDR[:,:,z]=imEqu[:,:,z]*roiImage
+    
+    imDR_2=original_2.copy()
+    for z in range(3):
+        imDR_2[:,:,z]=original_2[:,:,z]*roiImage
+   
+    imDU_2=imDR_2.copy()
     imDU = imDR.copy()
     umbrImage = ventanIDEA(imDR,roiImage)
     for z in range(3):
         imDU[:,:,z]=imDR[:,:,z]*umbrImage
         
-    contours,hierachy = cv2.findContours(umbrImage,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-    # _,contours,_ = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+#    contours,hierachy = cv2.findContours(umbrImage,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+   
+    _,contours,_ = cv2.findContours(umbrImage,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     
     for c in range(len(contours)):
-        cnt = contours[8]
+        cnt = contours[c]
 #        epsilon = 0.01*cv2.arcLength(cnt,True)
 #        approx = cv2.approxPolyDP(cnt,epsilon,True)
         x,y,w,h = cv2.boundingRect(cnt)
@@ -55,7 +64,7 @@ def test_all_RE(imagePath):
         else:
             umbrImage[int(y):int(y+h),int(x):int(x+w)] = 0
             
-    return pred
+    return pred, original_2 , imDU_2,umbrImage
 #    cv2.imwrite('contorno.jpg',original)
 #    cv2.imwrite('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/test-todo/'+filePath+'/'+str(c)+'-contorno.jpg',cropped)
 
