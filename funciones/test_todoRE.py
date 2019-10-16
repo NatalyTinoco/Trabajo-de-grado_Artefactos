@@ -35,9 +35,9 @@ def test_all_RE(imagePath):
         
     contours,hierachy = cv2.findContours(umbrImage,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     # _,contours,_ = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-    
+    predict=[]
     for c in range(len(contours)):
-        cnt = contours[8]
+        cnt = contours[c]
 #        epsilon = 0.01*cv2.arcLength(cnt,True)
 #        approx = cv2.approxPolyDP(cnt,epsilon,True)
         x,y,w,h = cv2.boundingRect(cnt)
@@ -48,14 +48,15 @@ def test_all_RE(imagePath):
         brillo,contraste,desvi=caracRe(cropped2)
         carac=pd.DataFrame({'contrastB':contraste,'desviacionB':desvi,'Brillo':brillo},index =['1'])
         pred=int(mpRE.predict(carac))
-        print(pred)
+        predict.append(pred)
+#        print(pred)
         
         if pred == 1:
             umbrImage[int(y):int(y+h),int(x):int(x+w)] = umbrImage[int(y):int(y+h),int(x):int(x+w)]
         else:
             umbrImage[int(y):int(y+h),int(x):int(x+w)] = 0
             
-    return pred
+    return predict
 #    cv2.imwrite('contorno.jpg',original)
 #    cv2.imwrite('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/test-todo/'+filePath+'/'+str(c)+'-contorno.jpg',cropped)
 
