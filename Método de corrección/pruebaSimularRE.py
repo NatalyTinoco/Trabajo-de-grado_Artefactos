@@ -4,25 +4,7 @@ Created on Mon Oct  7 13:32:55 2019
 
 @author: Nataly
 """
-#from tkFileDialog import *
-#from Tkinter import *
-#def abrir():
-#   ruta=askdirectory()
-#   archivo=askopenfile()
-#   archivo = open("r")
-#   lines = archivo.read()
-#   print (lines)
-#   
-#ventana=Tk()
-#ventana.config(bg="black")
-#ventana.geometry("500x400")
-#botonAbrir=Button(ventana,text="Seleccionar archivo", command=abrir)
-#botonAbrir.grid(padx=150,pady=100)
-#botonCompila=Button(ventana,text="Compilar")
-#botonCompila.grid(padx=210,pady=10)
-#ventana.mainloop()
 
-#%%
 def log(img,por):
     img = (np.log(img+1)/(np.log(por+np.max(img))))*255
     img = np.array(img,dtype=np.uint8)
@@ -89,7 +71,9 @@ for pp in range(len(ila)):
         ho,wo,co=img.shape
         print(ho,wo,co)
         jj=0
-        tamaños=[8,10,14,13,15,17,22,25]
+        hh,ww=mask.shape
+#        tamaños=[8,10,14,13,15,17,22,25,40,50,45,42,73]
+        tamaños=[hh,ww,50,36]
         while jj <= (1):
             pp= random.randint(0, len(tamaños)-1)
             pp2= random.randint(0, len(tamaños)-1)
@@ -118,8 +102,8 @@ for pp in range(len(ila)):
     cv2.imshow('RE',simu_f)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    cv2.imwrite('./bbox/simulacion/'+image,simu_f)
+    cv2.imwrite('./bbox/simulacion_2/'+image,simu_f)
     mask_f= cv2.normalize(mask_f, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)  
-    cv2.imwrite('./bbox/segmentaciones/'+image,mask_f)
+    cv2.imwrite('./bbox/segmentaciones_2/'+image,mask_f)
     
        

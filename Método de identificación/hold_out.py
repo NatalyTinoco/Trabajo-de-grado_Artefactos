@@ -87,52 +87,52 @@ def medidas(y_test,y_predictions,nombre):
     fn = matriz[1, 0]
     fp = matriz[0, 1]
     especifici.append(tn / (tn + fp))
-    f=plt.figure()
-    plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % roc_auc)
-    plt.plot([0, 1], [0, 1], 'k--')
-    plt.xlim([0.0, 1.0])
-    plt.ylim([0.0, 1.05])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('Receiver operating characteristic example')
-    plt.legend(loc="lower right")
-#    f.savefig('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/Método de identificación/DM/holdOUT/'+'ROC_BALANCEO2'+ str(nombre))
-    f.savefig('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/Método de identificación/RE/holdOUT/'+'ROC_BALANCEO2'+ str(nombre))
-    plt.close()
-    plt.show()
+#    f=plt.figure()
+#    plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % roc_auc)
+#    plt.plot([0, 1], [0, 1], 'k--')
+#    plt.xlim([0.0, 1.0])
+#    plt.ylim([0.0, 1.05])
+#    plt.xlabel('False Positive Rate')
+#    plt.ylabel('True Positive Rate')
+#    plt.title('Receiver operating characteristic example')
+#    plt.legend(loc="lower right")
+##    f.savefig('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/Método de identificación/DM/holdOUT/'+'ROC_BALANCEO2'+ str(nombre))
+#    f.savefig('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/Método de identificación/RE/holdOUT/'+'ROC_BALANCEO2'+ str(nombre))
+#    plt.close()
+#    plt.show()
     return []
 
-lr = LogisticRegression(solver='liblinear',multi_class='ovr')
-lr.fit(X_train, y_train)
-y_predictions=lr.predict(X_test)
-med.append(lr.score(X_test, y_test))
-nombre.append('Regresión')
-medidas(y_test,y_predictions,'Regresión')
-
-print('Regresión: ',lr.score(X_test, y_test))
-
-#rbf
-Cc=[0.2,0.5,0.7,1,1.3]
-#Cc=[0.7]
-J=0
-kernels=['rbf','linear','poly','sigmoid']
-for C in Cc: 
-    for ks in kernels: 
-        clf=SVC(kernel=ks,C=C).fit(X_train,y_train)
-        med.append(clf.score(X_test, y_test))
-        nombre.append('SVM_'+str(ks)+'_C:_'+str(C))
-        print('SVM ',ks,': ',clf.score(X_test,y_test))  
-        y_predictionss=clf.predict(X_test)
-        nooo='SVM'+ks+str(J)
-        medidas(y_test,y_predictionss,nooo)
-        J+=1
-        print(J,'================')
-    lin_svc =LinearSVC(C=C).fit(X, y)
-    med.append(lin_svc.score(X_test, y_test))
-    nombre.append('LinearSVM')
-    y_predictions=lin_svc.predict(X_test)
-    medidas(y_test,y_predictions,'LinearSVM')
-    print('SVMlinear:',lin_svc.score(X_test,y_test))
+#lr = LogisticRegression(solver='liblinear',multi_class='ovr')
+#lr.fit(X_train, y_train)
+#y_predictions=lr.predict(X_test)
+#med.append(lr.score(X_test, y_test))
+#nombre.append('Regresión')
+#medidas(y_test,y_predictions,'Regresión')
+#
+#print('Regresión: ',lr.score(X_test, y_test))
+#
+##rbf
+#Cc=[0.2,0.5,0.7,1,1.3]
+##Cc=[0.7]
+#J=0
+#kernels=['rbf','linear','poly','sigmoid']
+#for C in Cc: 
+#    for ks in kernels: 
+#        clf=SVC(kernel=ks,C=C).fit(X_train,y_train)
+#        med.append(clf.score(X_test, y_test))
+#        nombre.append('SVM_'+str(ks)+'_C:_'+str(C))
+#        print('SVM ',ks,': ',clf.score(X_test,y_test))  
+#        y_predictionss=clf.predict(X_test)
+#        nooo='SVM'+ks+str(J)
+#        medidas(y_test,y_predictionss,nooo)
+#        J+=1
+#        print(J,'================')
+#    lin_svc =LinearSVC(C=C).fit(X, y)
+#    med.append(lin_svc.score(X_test, y_test))
+#    nombre.append('LinearSVM')
+#    y_predictions=lin_svc.predict(X_test)
+#    medidas(y_test,y_predictions,'LinearSVM')
+#    print('SVMlinear:',lin_svc.score(X_test,y_test))
 
 nuestim=[10,15,20,30,39,49,60,70]
 for ne in nuestim:  
@@ -144,28 +144,28 @@ for ne in nuestim:
         medidas(y_test,y_predictions,'Random forest'+str(ne))
         print('Random F: ',rf.score(X_test, y_test))
 
-from sklearn.naive_bayes import GaussianNB
-by = GaussianNB()
-by.fit(X_train, y_train)
-med.append(by.score(X_test, y_test))
-nombre.append('Bayes')
-y_predictions=by.predict(X_test)
-medidas(y_test,y_predictions,'Bayes')
-print('Bayes: ',by.score(X_test, y_test))
-
-from sklearn.neural_network import MLPClassifier
-funAc=['identity', 'logistic', 'tanh', 'relu']
-sol=['lbfgs', 'sgd', 'adam']
-for so in sol:
-    for func in funAc:
-        rn = MLPClassifier(activation=func,solver=so, alpha=1e-5,hidden_layer_sizes=(30,30,30,30), random_state=1)
-        rn.fit(X, y) 
-        med.append(rn.score(X_test, y_test))
-        nombre.append('Red_'+str(so)+'_FuncionA:_'+str(func))
-        y_predictions=rn.predict(X_test)
-        medidas(y_test,y_predictions,'Red'+so+func)
-        print('Red_',func,'_',so,':',rn.score(X_test, y_test))
-
+#from sklearn.naive_bayes import GaussianNB
+#by = GaussianNB()
+#by.fit(X_train, y_train)
+#med.append(by.score(X_test, y_test))
+#nombre.append('Bayes')
+#y_predictions=by.predict(X_test)
+#medidas(y_test,y_predictions,'Bayes')
+#print('Bayes: ',by.score(X_test, y_test))
+#
+#from sklearn.neural_network import MLPClassifier
+#funAc=['identity', 'logistic', 'tanh', 'relu']
+#sol=['lbfgs', 'sgd', 'adam']
+#for so in sol:
+#    for func in funAc:
+#        rn = MLPClassifier(activation=func,solver=so, alpha=1e-5,hidden_layer_sizes=(30,30,30,30), random_state=1)
+#        rn.fit(X, y) 
+#        med.append(rn.score(X_test, y_test))
+#        nombre.append('Red_'+str(so)+'_FuncionA:_'+str(func))
+#        y_predictions=rn.predict(X_test)
+#        medidas(y_test,y_predictions,'Red'+so+func)
+#        print('Red_',func,'_',so,':',rn.score(X_test, y_test))
+#
 
 datos = {'Tipo cla': nombre,
          'Score':med,
@@ -179,7 +179,7 @@ datos = {'Tipo cla': nombre,
 
 datos = pd.DataFrame(datos)
 #datos.to_excel('holdOut_DM_binaria_balanceo2.xlsx') 
-#datos.to_excel('holdOut_RE_binaria_balanceop2.xlsx')         
+datos.to_excel('holdOut_REEE.xlsx')         
 """#%%
 valormaximo=np.max(med)
 pos=med.index(valormaximo)

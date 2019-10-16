@@ -43,9 +43,12 @@ def inpaintingB(imgOri,imSeg):
     return imgs
 
 def inpaintingNS(ima,mask):
-    ns = cv2.inpaint(ima,mask, 3, cv2.INPAINT_NS)
+#    ns = cv2.inpaint(ima,mask, 3, cv2.INPAINT_NS)
+    ns = cv2.inpaint(ima,mask, 10, cv2.INPAINT_NS)
+    
     return ns
 
 def inpaintingTA(ima,mask):
-    telea = cv2.inpaint(ima,mask, 3, cv2.INPAINT_TELEA)
+#    telea = cv2.inpaint(ima,mask, 3, cv2.INPAINT_TELEA)
+    telea = cv2.inpaint(ima,mask, 10, cv2.INPAINT_TELEA)
     return telea
