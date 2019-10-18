@@ -20,10 +20,17 @@ mSSIM=[[],[],[],[]]
 mMSE=[[],[],[],[]]
 mPSNR=[[],[],[],[]]
 
+#mSSIM=[[]]
+#mMSE=[[]]
+#mPSNR=[[]]
 i=0
-corre=[suavizado,inpaintingB,inpaintingNS,inpaintingTA]
-coreccion=['suavizado','inpaintingB','inpaintingNS','inpaintingTA']
-nu=30
+#corre=[suavizado,inpaintingB,inpaintingNS,inpaintingTA]
+#coreccion=['suavizado','inpaintingB','inpaintingNS','inpaintingTA']
+corre=[suavizado,inpaintingNS,inpaintingTA]
+coreccion=['suavizado','inpaintingNS','inpaintingTA']
+#20
+#30
+nu=10
 
 files="./bbox/simulacion/nombresSinRE.xlsx"
 ila= pd.read_excel(files)
@@ -34,6 +41,7 @@ for pp in range(len(ila)):
     simufile="./bbox/simulacion/"+image
     simula=cv2.imread(simufile)
     img=cv2.imread(file)
+    imgcorr=img
     mask =cv2.imread(fileseg,0)
     mask= cv2.normalize(mask, None, 0, 1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)  
     c=0
@@ -43,12 +51,20 @@ for pp in range(len(ila)):
         else:
              imgcorr=corre[co](simula,mask)
        
-        cv2.imwrite('./bbox/corregidas/'+coreccion[co]+image,imgcorr)     
+        cv2.imwrite('./bbox/corregidas/10_15_'+coreccion[co]+image,imgcorr)     
         mSSIM[c].append(ssim(img,imgcorr,multichannel=True))
         mPSNR[c].append(psnr(img,imgcorr))
         mMSE[c].append(mse(img,imgcorr))  
         c+=1
-    i+=1
+        i+=1
+    mSSIM.append(ssim(img,imgcorr,multichannel=True))
+    mPSNR.append(psnr(img,imgcorr))
+    mMSE.append(mse(img,imgcorr))
+#
+#datos = {'SSIM_suavizado':mSSIM,
+#         'MSE_suavizao': mMSE,
+#         'PSNR_suavizado':mPSNR}
+
 datos = {'SSIM_suavizado':mSSIM[0][:],
          'MSE_suavizao': mMSE[0][:],
          'PSNR_suavizado':mPSNR[0][:],
@@ -61,8 +77,9 @@ datos = {'SSIM_suavizado':mSSIM[0][:],
          'SSIM_inpaitingTA':mSSIM[3][:],
          'MSE_inpaitingTA': mMSE[3][:],
          'PSNR_inpaitingTA':mPSNR[3][:]}
+
 conso=pd.DataFrame(datos)
-conso.to_excel('medidasCorreccion_30_10.xlsx')
+conso.to_excel('medidas10_15.xlsx')
     
     
     

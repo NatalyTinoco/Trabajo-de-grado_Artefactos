@@ -21,6 +21,8 @@ ila= pd.read_excel(files)
 for pp in range(len(ila)):
     image=ila['n'][pp]
     img=cv2.imread('./bbox/SinRE/'+ila['n'][pp])
+    
+    img=cv2.imread('./bbox/SinRE/AN12_96.jpg')
     imgoriginal=img.copy()
     img_1=img.copy()
     #saber cuantos RE se quieren en la imagen 
