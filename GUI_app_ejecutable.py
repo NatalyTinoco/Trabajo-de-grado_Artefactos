@@ -12,9 +12,6 @@ from test_todoRE import test_all_RE
 from test_todoDM import test_all_DM
 from correccion import suavizado, inpaintingB, inpaintingNS, inpaintingTA
 
-from PyQt5.QtGui import QIcon, QPixmap,QImage
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QPushButton, QFileDialog, QMessageBox, QAction
 from PIL import Image, ImageQt
 
 from os import getcwd
@@ -23,22 +20,22 @@ import numpy as np
 
 global contador
 contador=0
-from PyQt5 import uic, QtWidgets
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QIcon, QPixmap,QImage
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QPushButton, QFileDialog, QMessageBox, QAction
 
-qtCreatorFile = "Artefactos.ui" #Aquí va el nombre de tu archivo
 
-Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
+from Artefactose import Ui_Artefactos_Endoscopia
 
-class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
+#qtCreatorFile = "Artefactos.ui" #Aquí va el nombre de tu archivo
+#Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
+
+class MyApp(QtWidgets.QMainWindow, Ui_Artefactos_Endoscopia):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
-        Ui_MainWindow.__init__(self)
+        Ui_Artefactos_Endoscopia.__init__(self)
         self.setupUi(self)
-       
-
-#
-        # ================== EVENTOS QPUSHBUTTON ===================
-
         self.Examinar.clicked.connect(self.seleccionarImagen)
         self.Analizar.clicked.connect(self.analizaImagen)
         self.Corregir.clicked.connect(self.corregirImagen)
