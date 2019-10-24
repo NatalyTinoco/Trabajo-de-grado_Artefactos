@@ -4,40 +4,35 @@ Created on Sun Aug 18 10:07:32 2019
 
 @author: Nataly
 """
-from matplotlib import pyplot as plt
 
-def ventaneoo(tamañoA, tamañoB,a,b,f,c, V):
-    vecesA = int(a/tamañoA)
-    vecesB = int(b/tamañoB)
-#    for fa1 in range(0,a-tamañoa1A,tamañoa1A):
-#       for ca1 in range(0,b-tamañoa1B,tamañoa1B):       
-#            vecesA = int(a/tamañoa1A)
-#            vecesB = int(b/tamañoa1B)
-#            croppeda1 = V[fa1:fa1+tamañoa1A,ca1:ca1+tamañoa1B]
-#            if ca1+tamañoa1B==tamañoa1B*vecesB-tamañoa1B:
-#               if fa1+tamañoa1A==tamañoa1A*vecesA-tamañoa1A:
-#                     croppeda1= V[fa1:a,ca1:b]
-#               else:
-#                      croppeda1 = V[fa1:fa1+tamañoa1A,ca1:]
-#            if fa1+tamañoa1A==tamañoa1A*vecesA-tamañoa1A:
-#                 if ca1+tamañoa1B==tamañoa1B*vecesB-tamañoa1B:
-#                     croppeda1 = V[fa1:a,ca1:b]                     
-#                 else:
-#                     croppeda1 = V[fa1:,ca1:ca1+tamañoa1B] 
-    cropped = V[f:f+tamañoA,c:c+tamañoB]
-   
-    #test2[f:f+tamañoA,c:c+tamañoB]=test[f:f+tamañoA,c:c+tamañoB]
-    if c==tamañoB*vecesB-tamañoB:
-        cropped = V[f:f+tamañoA,c:]
-   
-        #test2[f:f+tamañoA,c:]=test[f:f+tamañoA,c:]
-    if f==tamañoA*vecesA-tamañoA:
-         #print('ola')
-         if c==tamañoB*vecesB-tamañoB:
-            cropped = V[f:,c:]
-   
-             #test2[f:,c:]=test[f:,c:]
+def ventaneoo(tamañoa1A, tamañoa1B,a,b,fa1,ca1, otra):
+    vecesA = int(a/tamañoa1A)
+    vecesB = int(b/tamañoa1B)
+    croppeda1 = otra[fa1:fa1+tamañoa1A,ca1:ca1+tamañoa1B]
+    if ca1==tamañoa1B*vecesB-tamañoa1B:
+        croppeda1 = otra[fa1:fa1+tamañoa1A,ca1:b]
+    if fa1==tamañoa1A*vecesA-tamañoa1A :
+         if ca1==tamañoa1B*vecesB-tamañoa1B:
+            croppeda1 = otra[fa1:,ca1:]
          else:
-             cropped = V[f:,c:c+tamañoB]
+             croppeda1 = otra[fa1:,ca1:ca1+tamañoa1B]
        
-    return cropped
+    return croppeda1
+
+def ventadibujo(tamañoa1A, tamañoa1B,a,b,fa1,ca1, original_3_1):
+    import cv2
+    vecesA = int(a/tamañoa1A)
+    vecesB = int(b/tamañoa1B)
+    
+    if ca1==tamañoa1B*vecesB-tamañoa1B and ca1==tamañoa1B*vecesB-tamañoa1B or ca1==0 and fa1==0:
+        cv2.rectangle(original_3_1,(int(ca1),int(fa1)),(int(ca1+tamañoa1B),int(fa1+tamañoa1A)),(255,0,0),2)  
+#    else:and fa1!=tamañoa1A*vecesA-tamañoa1A
+    if ca1==tamañoa1B*vecesB-tamañoa1B and fa1==0:
+        cv2.rectangle(original_3_1,(int(ca1),int(fa1)),(int(ca1+tamañoa1B),int(b)),(255,0,0),2)  
+    if fa1==tamañoa1A*vecesA-tamañoa1A and ca1==0:
+         if ca1==tamañoa1B*vecesB-tamañoa1B:
+            cv2.rectangle(original_3_1,(int(ca1),int(fa1)),(int(a),int(b)),(255,0,0),2) 
+         else:
+             cv2.rectangle(original_3_1,(int(ca1),int(fa1)),(int(ca1+tamañoa1A),int(b)),(255,0,0),2) 
+   
+    return original_3_1

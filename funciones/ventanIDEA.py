@@ -15,9 +15,11 @@ def find_nearest(array,value):
     return array[idx]
 
 
-def ventanIDEA(imDR,imaROI):   
-    _,contours,_= cv2.findContours(imaROI,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-#    contours,hierarchy = cv2.findContours(imaROI, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+def ventanIDEA(imDR,imaROI): 
+    try:
+        _,contours,_= cv2.findContours(imaROI,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    except ValueError:    
+       contours,hierarchy = cv2.findContours(imaROI, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     
     areas = [cv2.contourArea(c) for c in contours]
     max_index = np.argmax(areas)
@@ -25,7 +27,7 @@ def ventanIDEA(imDR,imaROI):
     x3,y3,w3,h3 = cv2.boundingRect(cnt)
 
     R,G,B=cv2.split(imDR)
-    V=G[y3:y3+h3,x3:x3+w3]
+    V=G[y3:y3+h3-20,x3:x3+w3-20]
     Binary=V.copy()
     a,b = V.shape
 
@@ -56,11 +58,15 @@ def ventanIDEA(imDR,imaROI):
                 zz[ii]=int(hist[ii])
  
             hist=hist.tolist() 
-            gradiente=np.gradient(zz[200:])
+#            pru=240
+            pru=250
+            gradiente=np.gradient(zz[pru:])
+            #gradiente=np.gradient(zz[220:])
             uu=find_nearest(gradiente,0)
             gradiente=gradiente.tolist()
             umbral1 = gradiente.index(uu)
-            umbral=200+umbral1
+            umbral=pru+umbral1
+            #umbral=200+umbral1
             
             hl=hl+1
             
@@ -84,7 +90,7 @@ def ventanIDEA(imDR,imaROI):
  
     fila,Col=G.shape
     Binaryfinal=np.zeros((fila,Col)).astype(np.uint8)
-    Binaryfinal[y3:y3+h3,x3:x3+w3]=Binary    
+    Binaryfinal[y3:y3+h3-20,x3:x3+w3-20]=Binary    
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (15, 15))
     dilatacion = cv2.dilate( Binaryfinal,kernel,iterations = 1)
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (15, 15))
