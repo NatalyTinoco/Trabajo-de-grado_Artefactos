@@ -15,8 +15,8 @@ from ventaneo import ventaneoo
 import numpy as np
 
 #imagePath1 = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subRE/00000.jpg'
-#with open('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/test-todo/model_pickle_DM','rb') as f:
-with open('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/test-todo/model_pickle_DM','rb') as f:
+with open('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/test-todo/model_pickle_DM','rb') as f:
+#with open('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/test-todo/model_pickle_DM','rb') as f:
     mpDM = pickle.load(f)
 
 def test_all_DM(imagePath1):
@@ -44,7 +44,8 @@ def test_all_DM(imagePath1):
        imDR=cv2.resize(imDR,(hh,500))   
        roiImage=cv2.resize(roiImage,(hh,500)) 
     
-    _,contours,_= cv2.findContours(roiImage,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+#    _,contours,_= cv2.findContours(roiImage,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    contours,hierachy = cv2.findContours(roiImage,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     areas = [cv2.contourArea(c) for c in contours]
     max_index = np.argmax(areas)
     cnt=contours[max_index]
