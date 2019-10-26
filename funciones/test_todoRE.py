@@ -16,9 +16,9 @@ from caracRE import caracRe
 #from correccion import suavizado,inpaintingB,inpaintingNS,inpaintingTA
 
 #imagePath = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subRE/00095.jpg'
-  
-fileOpen = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle'  
-#fileOpen = 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle'
+
+#fileOpen = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle'  
+fileOpen = 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle'
 
 with open(fileOpen,'rb') as f:
     mpRE = pickle.load(f)

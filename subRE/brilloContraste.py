@@ -53,3 +53,8 @@ def brillo(img):
     brillo = int(brillo)
     #print("El brillo de la imagen es: ", brillo)
 
+
+
+
+    
+    

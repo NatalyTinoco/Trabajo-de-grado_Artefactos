@@ -17,9 +17,11 @@ xtestre=[]
 xprere=[]
 xtestdm=[]
 xpredm=[]
+import cv2
 
 for file in glob.glob("*.jpg"):
     imgfile=file
+    img=cv2.imread(file)
     resul, original_2,imDU_2,umbrImage,original_3=test_all_RE(file)
     resuldm,originaldm_2,imDRdm_2,original_3=test_all_DM(file,original_3)
     
@@ -27,33 +29,31 @@ for file in glob.glob("*.jpg"):
     grupo1 = [i for i,x in enumerate(resul) if x == 1]
     grupodm0 = [i for i,x in enumerate(resuldm) if x == 0]
     grupodm1 = [i for i,x in enumerate(resuldm) if x == 1]
-    xtestdm.append(0)
-    xtestre.append(1)
+    xtestre.append(3)
     
     if len(grupo1)>0 and len(grupodm0)==0:
         xprere.append(1)
     if len(grupodm0)>0 and len(grupo1)==0:
-        xpredm.append(0)
+        xprere.append(0)
     if  len(grupodm0)>0 and len(grupo1)>0 :
         xprere.append(3)
-        xpredm.append(3)
+        cv2.imwrite('./clasifica/'+file,img)
     if len(grupo0)>0 and len(grupodm1)>0 and len(grupo1)==0 and len(grupodm0)==0 or math.isnan(np.mean(resul))==True and len(grupodm1)>0 and len(grupodm0)==0:
-        xpredm.append(2) 
         xprere.append(2) 
         
 
-
+#%%
 
 import pandas as pd  
 datos = {
          'yre': xtestre,
          'predicre':xprere,
-         'ydm': xtestdm,
-         'predicdm':xpredm,
+#         'ydm': xtestdm[0:13],
+#         'predicdm':xpredm,
         }
 
 datos = pd.DataFrame(datos)
 #med 240
 #med_2 250
 
-datos.to_excel('Med_re___dm3.xlsx')      
+datos.to_excel('Med__4.xlsx')      
