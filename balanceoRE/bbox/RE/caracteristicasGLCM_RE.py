@@ -109,7 +109,6 @@ consolidado = pd.DataFrame({"valorintensidad":valorintensidad,
 #                            "Entropia":entropTF})
 
 
-=[]
 mediana=[]
 destan=[]
 var=[]
