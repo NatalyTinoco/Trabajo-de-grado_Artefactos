@@ -30,6 +30,7 @@ def GLCM (imA):
 
 
 def carcDM(imFile):
+#    imFile=cv2.normalize(imFile, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
     HSV=cv2.cvtColor(imFile,cv2.COLOR_RGB2HSV)
     H,cropped,V=cv2.split(HSV)
     cropSinFou=cropped.copy()

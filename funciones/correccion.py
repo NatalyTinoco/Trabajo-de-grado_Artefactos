@@ -44,15 +44,15 @@ def inpaintingB(imgOri,imSeg):
 
 def inpaintingNS(ima,mask):
 #    ns = cv2.inpaint(ima,mask, 3, cv2.INPAINT_NS)
-#    ns = cv2.inpaint(ima,mask, 10, cv2.INPAINT_NS)
-    ns = cv2.inpaint(ima,mask, 15, cv2.INPAINT_NS)
+    ns = cv2.inpaint(ima,mask, 10, cv2.INPAINT_NS)
+#    ns = cv2.inpaint(ima,mask, 15, cv2.INPAINT_NS)
 #    ns = cv2.inpaint(ima,mask, 1, cv2.INPAINT_NS)
     
     return ns
 
 def inpaintingTA(ima,mask):
 #    telea = cv2.inpaint(ima,mask, 3, cv2.INPAINT_TELEA)
-#    telea = cv2.inpaint(ima,mask, 10, cv2.INPAINT_TELEA)
-    telea = cv2.inpaint(ima,mask, 15, cv2.INPAINT_TELEA)
+    telea = cv2.inpaint(ima,mask, 10, cv2.INPAINT_TELEA)
+#    telea = cv2.inpaint(ima,mask, 15, cv2.INPAINT_TELEA)
 #    telea = cv2.inpaint(ima,mask, 1, cv2.INPAINT_TELEA)
     return telea

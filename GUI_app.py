@@ -63,10 +63,11 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def seleccionarImagen(self):
         global filePath,pixmapImagen,contador
         contador=0
-        filePath, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos')
+        formats = "JPEG (*.jpg;*.jpeg;*jpe;*jfif);;PNG(*.png)"
+        filePath, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos',formats)
        
         if filePath != "":
-            print ("Dirección",filePath) #Opcional imprimir la dirección del archivo
+#            print ("Dirección",filePath) #Opcional imprimir la dirección del archivo
             if str(filePath):
             # Adaptar imagen
                 pixmapImagen = QPixmap(str(filePath)).scaled(351, 291, Qt.KeepAspectRatio,
@@ -81,10 +82,12 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         global filePath,original_2,imDU_2,umbrImage
 #        print ("======",filePath) #Opcional imprimir la dirección del archivo
        
-        resul, original_2,imDU_2,umbrImage=test_all_RE(str(filePath))
+        resul, original_2,imDU_2,umbrImage,original_3=test_all_RE(str(filePath))
 #        print('=re=',resul)
-        resuldm,originaldm_2,imDRdm_2=test_all_DM(str(filePath))
+        resuldm,originaldm_2,imDRdm_2,original_3=test_all_DM(str(filePath),original_3)
 #        print('=dm=',resuldm)
+        print('============A')
+        print(np.mean(resul),np.mean(resuldm))
         
         if np.mean(resul)==1 and np.mean(resuldm)==1:
             self.textEdit.setText('Reflejos especulares')
@@ -137,7 +140,13 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.popup_NO.hide()
             self.popup_DOS.show()
             
-        self.label_3.setPixmap(pixmapImagen)
+        ipa=cv2.cvtColor(original_3, cv2.COLOR_RGB2BGR) 
+        height, width, channel = ipa.shape
+        bytesPerLine = 3 * width
+        qImg = QImage(ipa, width, height, bytesPerLine, QImage.Format_RGB888)
+        qImg = QPixmap(qImg.scaled(351, 291, Qt.KeepAspectRatio,Qt.SmoothTransformation))
+        
+        self.label_3.setPixmap(qImg)
         self.resize(1207, 490)
         
     def closeEvent(self,event):
@@ -159,7 +168,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
            
         if self.automatica.isChecked():
             umbrImage=cv2.normalize(umbrImage, None, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC3)
-            ipa=inpaintingNS(imcoor,umbrImage)
+            ipa=inpaintingTA(imcoor,umbrImage)
             ipa=cv2.cvtColor(ipa, cv2.COLOR_RGB2BGR) 
             height, width, channel = ipa.shape
             bytesPerLine = 3 * width
@@ -185,13 +194,13 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         item_dos=self.popup_DOS.currentText()
 
         
-        print(item)
+#        print(item)
         global name
         
         if item=='Guardar imagen original' or  item_dm=='Guardar imagen original'or  item_no=='Guardar imagen original' or  item_dos=='Guardar imagen original':
             formats = "JPEG (*.jpg;*.jpeg;*jpe;*jfif);;PNG(*.png)"
             name = QFileDialog.getSaveFileName(self, "Save as image", "untitled.jpg", formats)
-            print('NAME',name)
+#            print('NAME',name)
             pixmapImagen_2 = QPixmap(str(filePath))
             pixmapImagen_2.save(str(name[0]))
 
@@ -199,7 +208,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             if contador!=0:
                 formats = "JPEG (*.jpg;*.jpeg;*jpe;*jfif);;PNG(*.png)"
                 name = QFileDialog.getSaveFileName(self, "Save as image", "untitled.jpg", formats)
-                print('NAME',name)
+#                print('NAME',name)
                 height, width, channel = ipa.shape
                 bytesPerLine = 3 * width
                 qImg = QImage(ipa, width, height, bytesPerLine, QImage.Format_RGB888)
@@ -230,7 +239,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 
         if item_dm=='Eliminar imagen' or  item_dos=='Eliminar imagen':   
             should_delete = QMessageBox.question(self, "pushButton", "¿Ésta seguro que desea eliminar este archivo?", QMessageBox.Yes, QMessageBox.No)
-            print(should_delete)
+#            print(should_delete)
             if should_delete == QMessageBox.Yes:
                from os import remove
                remove(str(filePath))

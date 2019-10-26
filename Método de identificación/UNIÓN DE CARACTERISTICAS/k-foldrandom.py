@@ -92,6 +92,7 @@ for train_index, test_index in kf.split(X):
     ne=15
     rf = RandomForestClassifier(n_estimators=ne)
     rf.fit(X_train, y_train)
+    
     nombre.append('entrenamiento')
     med.append(rf.score(X_test, y_test))
     y_predictions=rf.predict(X_test)
