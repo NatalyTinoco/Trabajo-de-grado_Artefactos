@@ -15,8 +15,8 @@ from ventaneo import ventaneoo,ventadibujo
 import numpy as np
 
 #imagePath1 = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subRE/00000.jpg'
-#with open('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/test-todo/model_pickle_DM','rb') as f:
-with open('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/test-todo/model_pickle_DM','rb') as f:
+with open('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/test-todo/model_pickle_DM','rb') as f:
+#with open('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/test-todo/model_pickle_DM','rb') as f:
     mpDM = pickle.load(f)
 def contorn(roiImage_1):
     try:

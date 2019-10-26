@@ -65,10 +65,14 @@ def ROI(ima):
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (37, 37))
     close=cv2.morphologyEx(openi, cv2.MORPH_CLOSE, kernel)
     
+#    contours,hierachy = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+
+    
     try:
         contours,hierachy = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     except ValueError:    
         _,contours,_ = cv2.findContours(close,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+
 
     areas = [cv2.contourArea(c) for c in contours]
     max_index = np.argmax(areas)

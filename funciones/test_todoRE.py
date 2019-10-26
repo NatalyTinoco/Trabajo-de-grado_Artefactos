@@ -16,9 +16,11 @@ from caracRE import caracRe
 #from correccion import suavizado,inpaintingB,inpaintingNS,inpaintingTA
 
 #imagePath = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/subRE/00095.jpg'
-    
-#with open('C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle','rb') as f:
-with open('C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle','rb') as f:
+  
+fileOpen = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle'  
+#fileOpen = 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/Método de identificación/model_pickle'
+
+with open(fileOpen,'rb') as f:
     mpRE = pickle.load(f)
    
 def test_all_RE(imagePath):
@@ -49,11 +51,11 @@ def test_all_RE(imagePath):
         _,contours,_ = cv2.findContours(umbrImage,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
         
     predic=[]
+
     if len(contours)==0:
          pred=0
     else:
         for c in range(len(contours)):
-         
             cnt = contours[c]
             x,y,w,h = cv2.boundingRect(cnt)
             
