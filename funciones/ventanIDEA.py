@@ -59,7 +59,7 @@ def ventanIDEA(imDR,imaROI):
  
             hist=hist.tolist() 
 #            pru=240
-            pru=250
+            pru=230
             gradiente=np.gradient(zz[pru:])
             #gradiente=np.gradient(zz[220:])
             uu=find_nearest(gradiente,0)

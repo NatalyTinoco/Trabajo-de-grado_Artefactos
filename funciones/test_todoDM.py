@@ -48,26 +48,26 @@ def test_all_DM(imagePath1,original_3):
     for z in range(3):
         imDR_2[:,:,z]=original_2[:,:,z]*roiImage
         
-    print(imDR.shape)
+#    print(imDR.shape)
     hh,ww,cc=imDR.shape
 
     roiImage_1=roiImage.copy()
-    upa=310
+    upa=320
 #    upa=520
-    apa=310
+    apa=520
 #    apa=620
     if hh<upa and ww< upa :
        imDR=cv2.resize(imDR,(apa,apa))   
-       roiImage=cv2.resize(roiImage,(apa,310)) 
+       roiImage=cv2.resize(roiImage,(apa,apa)) 
        original_3_1=cv2.resize(original_3_1,(apa,apa)) 
-#    if hh<upa and ww>upa:
-#       imDR=cv2.resize(imDR,(apa,ww))   
-#       roiImage=cv2.resize(roiImage,(apa,ww)) 
-#       original_3_1=cv2.resize(original_3_1,(apa,ww)) 
-#    if ww<upa and hh>upa:
-#       imDR=cv2.resize(imDR,(hh,apa))   
-#       roiImage=cv2.resize(roiImage,(hh,apa)) 
-#       original_3_1=cv2.resize(original_3_1,(hh,apa)) 
+    if hh<upa and ww>upa:
+       imDR=cv2.resize(imDR,(apa,ww))   
+       roiImage=cv2.resize(roiImage,(apa,ww)) 
+       original_3_1=cv2.resize(original_3_1,(apa,ww)) 
+    if ww<upa and hh>upa:
+       imDR=cv2.resize(imDR,(hh,apa))   
+       roiImage=cv2.resize(roiImage,(hh,apa)) 
+       original_3_1=cv2.resize(original_3_1,(hh,apa)) 
 
     x,y,w,h = contorn(roiImage)
     otra=imDR[y:y+h,x:x+w]
@@ -78,9 +78,6 @@ def test_all_DM(imagePath1,original_3):
 #    tamañoa1A=500
 #    tamañoa1B=500
     predictions = []
-    vecesA = int(a/tamañoa1A)
-    vecesB = int(b/tamañoa1B)
-    print('veces== ',vecesA,vecesB,a,b)
     
     for fa1 in range(0,a-tamañoa1A,tamañoa1A):
         for ca1 in range(0,b-tamañoa1B,tamañoa1B):       
@@ -103,7 +100,7 @@ def test_all_DM(imagePath1,original_3):
         
     return predictions,original_2,imDR_2,original_5
 
-#imagePath1 = 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subDM/00002.jpg'
+#imagePath1 = 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subDM/00015.jpg'
 #imagePath1 = 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/TODAAS/0000572.jpg'
 ##imagePath1 = 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/TODAAS/00019.jpg'
 #imagePath1 = 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/TODAAS/CT56_colitis_05604.jpg'

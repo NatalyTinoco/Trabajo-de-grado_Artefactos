@@ -184,7 +184,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ubicacion.setStyleSheet('QPushButton { background-color: rgb(102, 102, 102);}')
         self.corre.setStyleSheet('QPushButton {background-color: rgb(175, 175, 175);}')
         
-        self.resize(1207, 490)
+        self.resize(1307, 490)
         
     def mostrariubi(self):
         global ipaubi

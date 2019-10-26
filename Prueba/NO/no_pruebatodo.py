@@ -11,12 +11,14 @@ from test_todoDM import test_all_DM
 import numpy as np
 import math
 import glob
+import cv2
 #    filetxt=file[0:len(file)-3]+'txt'      
 #    bboxfile=filetxt
 xtest=[]
 xpre=[]
 for file in glob.glob("*.jpg"):
     imgfile=file
+    img=cv2.imread(file)
     resul, original_2,imDU_2,umbrImage,original_3=test_all_RE(file)
     resuldm,originaldm_2,imDRdm_2,original_3=test_all_DM(file,original_3)
     
@@ -33,14 +35,15 @@ for file in glob.glob("*.jpg"):
         xpre.append(3)     
     if len(grupo0)>0 and len(grupodm1)>0 and len(grupo1)==0 and len(grupodm0)==0 or math.isnan(np.mean(resul))==True and len(grupodm1)>0 and len(grupodm0)==0:
         xpre.append(2) 
+        cv2.imwrite('./clasifica/'+file,img)
 
-import pandas as pd  
-datos = {'Y': xtest,
-         'predic':xpre}
-
-datos = pd.DataFrame(datos)
-#med 240
-#med_2 250
-#med4=250 re y dm 500
-#med5 250re y dm 500 con ventana de 
-datos.to_excel('Med_5.xlsx')      
+#import pandas as pd  
+#datos = {'Y': xtest,
+#         'predic':xpre}
+#
+#datos = pd.DataFrame(datos)
+##med 240
+##med_2 250
+##med4=250 re y dm 500
+##med5 250re y dm 500 con ventana de 
+#datos.to_excel('Med3.xlsx')      

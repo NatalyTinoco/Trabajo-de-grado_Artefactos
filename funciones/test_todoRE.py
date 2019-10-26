@@ -58,6 +58,7 @@ def test_all_RE(imagePath):
             x,y,w,h = cv2.boundingRect(cnt)
             
             cropped2 = imDR[int(y):int(y+h),int(x):int(x+w)]
+#            cropped2 = imDU[int(y):int(y+h),int(x):int(x+w)]
             
             brillo,contraste,desvi=caracRe(cropped2)
             carac=pd.DataFrame({'contrastB':contraste,'desviacionB':desvi,'Brillo':brillo},index =['1'])
