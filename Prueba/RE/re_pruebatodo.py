@@ -5,18 +5,22 @@ Created on Wed Oct 23 18:43:43 2019
 @author: Nataly
 """
 import sys
-sys.path.insert(1, 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/funciones')
+path = 'C:/Users/Usuario/Documents/Daniela/Tesis/Trabajo-de-grado_Artefactos/funciones' 
+#path= 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/funciones'
+sys.path.insert(1,path)
 from test_todoRE import test_all_RE
 from test_todoDM import test_all_DM
 import numpy as np
 import math
 import glob
+import cv2
 #    filetxt=file[0:len(file)-3]+'txt'      
 #    bboxfile=filetxt
 xtest=[]
 xpre=[]
 for file in glob.glob("*.jpg"):
     imgfile=file
+    img = cv2.imread(file)
     resul, original_2,imDU_2,umbrImage,original_3=test_all_RE(file)
     resuldm,originaldm_2,imDRdm_2,original_3=test_all_DM(file,original_3)
     
@@ -27,9 +31,10 @@ for file in glob.glob("*.jpg"):
     xtest.append(1)
         
     if len(grupo1)>0 and len(grupodm0)==0:
-       xpre.append(1)
+        cv2.imwrite('./clasifica/'+file,img)
+        xpre.append(1)
     if len(grupodm0)>0 and len(grupo1)==0:
-       xpre.append(0)
+        xpre.append(0)
     if  len(grupodm0)>0 and len(grupo1)>0 :
         xpre.append(3)     
     if len(grupo0)>0 and len(grupodm1)>0 and len(grupo1)==0 and len(grupodm0)==0 or math.isnan(np.mean(resul))==True and len(grupodm1)>0 and len(grupodm0)==0:
