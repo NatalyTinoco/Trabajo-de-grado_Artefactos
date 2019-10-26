@@ -112,19 +112,14 @@ for train_index, test_index in loo.split(X):
     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
     y_train, y_test = y.iloc[train_index], y.iloc[test_index]
     for clas in range(len(clasificadores)):
-        clasificadores[clas].fit(X_train, y_train)
-        y_pred = clasificadores[clas].predict(X_test)
-        print(clas)
-        yp[clas].append(y_pred)
-        yt[clas].append(np.asarray(y_test))
-        xt1[clas].append(X_test['contrastB'].tolist())
-        hl=clas+1
-        xt2[clas].append(X_test['desviacionB'].tolist())
-        xt3[clas].append(X_test['Brillo'].tolist())
-#      
-#        xt2[m].append(X_test)
-        hs=hl+1 
-        m+=1
+        lr=LogisticRegression(solver='liblinear',multi_class='ovr')
+        lr.fit(X_train, y_train)
+        y_pred = lr.predict(X_test)
+        yp.append(y_pred)
+        yt.append(np.asarray(y_test))
+        xt1.append(X_test['contrastB'].tolist())
+        xt2.append(X_test['desviacionB'].tolist())
+        xt3.append(X_test['Brillo'].tolist())
 
 #clasificadores =[]
 nomClas = ['REGRESION']
@@ -140,10 +135,12 @@ m=0
 for train_index, test_index in loo.split(X):
     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
     y_train, y_test = y.iloc[train_index], y.iloc[test_index]
-    lr=MLPClassifier(activation='relu',solver='adam', alpha=1e-5,hidden_layer_sizes=(30,30,30,30))
+    lr=LogisticRegression(solver='liblinear',multi_class='ovr')
+    lr.fit(X_train, y_train)
+#    lr=MLPClassifier(activation='relu',solver='adam', alpha=1e-5,hidden_layer_sizes=(30,30,30,30))
 #    lr = LogisticRegression(solver='liblinear',multi_class='ovr')
 #    lr=GaussianNB()
-    lr.fit(X_train, y_train) 
+#    lr.fit(X_train, y_train) 
     y_predictions=lr.predict(X_test)
 #    rn=MLPClassifier(activation='relu',solver='adam', alpha=1e-5,hidden_layer_sizes=(30,30,30,30),
 #    rn.fit(X_train, y_train)
@@ -261,8 +258,7 @@ datos = pd.DataFrame({'Score':med,
 
 datos = pd.DataFrame(datos)
 datos.to_excel('Leave_RE_binaria_balanceo2a.xlsx')     
-                      'AUC':valorauc
-                      })
+
     
 
 datos = pd.DataFrame(datos)
