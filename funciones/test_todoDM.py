@@ -78,6 +78,7 @@ def test_all_DM(imagePath1,original_3):
 #    tamañoa1A=500
 #    tamañoa1B=500
     predictions = []
+    bboxdm=[],[],[],[],[]
     
     for fa1 in range(0,a-tamañoa1A,tamañoa1A):
         for ca1 in range(0,b-tamañoa1B,tamañoa1B):       
@@ -87,18 +88,24 @@ def test_all_DM(imagePath1,original_3):
             pred=int(mpDM.predict(carac))
             predictions.append(pred)
             if pred == 0:
-               original_3_1=ventadibujo(tamañoa1A, tamañoa1B,a,b,fa1,ca1, original_3_1)
+               original_3_1=ventadibujo(tamañoa1A, tamañoa1B,a,b,fa1,ca1, original_3_1,bboxdm)
+               
    
 
     if np.mean(predictions)==0:  
         x1,y1,w1,h1 = contorn(roiImage_1)
         cv2.rectangle(original_4,(x1,y1),(int(x1+w1-5),int(y1+h1-5)),(255,0,0),2)   
         original_5=original_4
+        bboxdm[0].append(0)
+        bboxdm[1].append(int(x1))
+        bboxdm[2].append(int(y1))
+        bboxdm[3].append(int(w1))
+        bboxdm[4].append(int(h1))
         
     else:
         original_5=cv2.resize(original_3_1,(yy,xx)) 
         
-    return predictions,original_2,imDR_2,original_5
+    return predictions,original_2,imDR_2,original_5,bboxdm
 
 #imagePath1 = 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/subDM/00015.jpg'
 #imagePath1 = 'C:/Users/Nataly/Documents/Trabajo-de-grado_Artefactos/TODAAS/0000572.jpg'

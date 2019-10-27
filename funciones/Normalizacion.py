@@ -92,34 +92,4 @@ def log(img):
     img = np.array(img,dtype=np.uint8)
     return img
     
-"""
-#file='Lap_01004'
-#file='WL_00485'
-file='00000'
-#file='Lap_01004'
-#file='test'
-#file='rgb (1)'
-#file='NCL (532)'file='Lap_01004'
-#file='DB58_colitis_full_00479'
-#file='DB58_colitis_full_03038'
-#file='gastro_00377'
-#file='CT56_colitis_02461'
-#file='Flu_01025'
 
-img=cv2.imread(file+'.jpg')
-img=cv2.cvtColor(img,cv2.COLOR_RGB2BGR)
-plt.imshow(img)
-plt.show()
-print('Min: %.3f, Max: %.3f' % (img.min(), img.max()))
-plt.hist(img.ravel(),256,[img.min(),img.max()]); plt.show()
-img=normalizacionintensi(img)
-
-plt.imshow(img)
-plt.show()   
-tamanu=img.shape
-print(tamanu)
-print('Min: %.3f, Max: %.3f' % (img.min(), img.max()))
-plt.hist(img.ravel(),256,[img.min(),img.max()]); plt.show()
-#plt.imshow(img[0:19,0:19,:])
-#plt.show()
-"""

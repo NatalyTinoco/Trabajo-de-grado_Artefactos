@@ -5,15 +5,15 @@ Created on Wed Oct 23 21:46:27 2019
 @author: Nataly
 """
 import pandas as pd
-file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Prueba\prueba.xlsx'
+file = r'C:\Users\Nataly\Documents\Trabajo-de-grado_Artefactos\Prueba\evaluación/evaluacion.xlsx'
 
-datos= pd.read_excel(file,sheet_name='Hoja5')
+datos= pd.read_excel(file)
 datos=datos.astype(float).fillna(0.0)
 #
 #y=datos.Clase
 #X=datos.drop('Clase',axis=1)
-xtest=datos['xtest']
-xpre=datos['predic']
+xtest=datos['test']
+xpre=datos['prueba']
 #print(datos['Clase'].value_counts()) 
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score

@@ -51,6 +51,7 @@ def test_all_RE(imagePath):
         _,contours,_ = cv2.findContours(umbrImage,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
         
     predic=[]
+    bboxre=[],[],[],[],[]
 
     if len(contours)==0:
          pred=0
@@ -69,10 +70,15 @@ def test_all_RE(imagePath):
             if pred == 1:
                 umbrImage[int(y):int(y+h),int(x):int(x+w)] = umbrImage[int(y):int(y+h),int(x):int(x+w)]
                 cv2.rectangle(original_3,(int(x),int(y)),(int(x+w),int(y+h)),(0,0,255),2)  
+                bboxre[0].append(1)
+                bboxre[1].append(int(x))
+                bboxre[2].append(int(y))
+                bboxre[3].append(int(w+x))
+                bboxre[4].append(int(h+y))
             else:
                 umbrImage[int(y):int(y+h),int(x):int(x+w)] = 0
             
             predic.append(pred)
             
-    return predic, original_2 , imDU_2,umbrImage,original_3
+    return predic, original_2 , imDU_2,umbrImage,original_3,bboxre
 

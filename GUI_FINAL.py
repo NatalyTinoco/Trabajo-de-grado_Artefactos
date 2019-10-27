@@ -81,8 +81,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 #            self.labe_2.clear()
          
         otroc+=1
-        resul, original_2,imDU_2,umbrImage,original_3=test_all_RE(str(filePath))
-        resuldm,originaldm_2,imDRdm_2,original_3=test_all_DM(str(filePath),original_3)
+        resul, original_2,imDU_2,umbrImage,original_3,bboxre=test_all_RE(str(filePath))
+        resuldm,originaldm_2,imDRdm_2,original_3,bboxdm=test_all_DM(str(filePath),original_3)
         
         grupo0 = [i for i,x in enumerate(resul) if x == 0]
         grupo1 = [i for i,x in enumerate(resul) if x == 1]
@@ -271,7 +271,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             pixmapImagen_2= QPixmap(qImg)
             pixmapImagen_2.save(str(name[0]))
         
-        if item=='Descargar mascara binaria de RE'or  item_dos=='Descargar mascara binaria de RE':
+        if item=='Guardar mascara binaria de RE'or  item_dos=='Guardar mascara binaria de RE':
                 formats = "JPEG (*.jpg;*.jpeg;*jpe;*jfif);;PNG(*.png)"
                 name = QFileDialog.getSaveFileName(self, "Save as image", "untitled.jpg", formats)
                 global umbrImage
