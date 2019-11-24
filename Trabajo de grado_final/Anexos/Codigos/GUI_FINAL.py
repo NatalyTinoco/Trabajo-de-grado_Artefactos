@@ -55,7 +55,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         h=320
         contador=0
         formats = "JPEG (*.jpg;*.jpeg;*jpe;*jfif);;PNG(*.png)"
-        filePath, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', './Anexos/Codigos/',formats)
+        filePath, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', './Anexos/Codigos/imagenes_pruebaGUI/',formats)
         if filePath != "":
             if str(filePath):
                 pixmapImagen = QPixmap(str(filePath)).scaled(w, h, Qt.KeepAspectRatio,

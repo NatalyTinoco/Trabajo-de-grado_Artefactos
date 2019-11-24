@@ -21,9 +21,9 @@ for file in glob.glob("*.jpg"):
     imggau=img.copy()
     imgpro=img.copy()
     imgo=img.copy()
-    imgg=globalequalization(img)
+#    imgg=globalequalization(img)
     imga=adaptativeequalization(imga)
-    imgc=contraststretching(imgc)
+#    imgc=contraststretching(imgc)
     #imgg=filtroautolevel(img)
     #imga=filtromediana(imga)
     #imgc=filtrominimo(imgc)
@@ -32,22 +32,32 @@ for file in glob.glob("*.jpg"):
     #plt.imshow(imga)
     #plt.show()
     
-    fig, ax = plt.subplots(ncols=4, figsize=(16,10), sharex=True, sharey=True)
+    plt.hist(imgo.ravel(),256,[0,256])
+    plt.show()
+
+     
+    plt.hist(imga.ravel(),256,[0,256])
+    plt.show()
+    
+    fig, ax = plt.subplots(ncols=2, figsize=(16,10), sharex=True, sharey=True)
     ax[0].imshow(imgo)    
-    ax[1].imshow(imgg)   
-    ax[2].imshow(imga)
-    ax[3].imshow(imgc)
+#    ax[1].imshow(imgg)   
+    ax[1].imshow(imga)
+#    ax[3].imshow(imgc)
     #ax[4].imshow(imggau)
     #ax[5].imshow(imgpro)
     
     if i==0:
         ax[0].set_title('Sin ecualizar')
-        ax[1].set_title('Global')
-        ax[2].set_title('Adaptativa')
-        ax[3].set_title('E. de contrate')
+#        ax[1].set_title('Global')
+        ax[1].set_title('Adaptativa')
+#        ax[3].set_title('E. de contrate')
         #ax[4].set_title('Gaussiano')
         #ax[5].set_title('Media')
         
         
     plt.show()
     i=i+1
+    
+    
+   
